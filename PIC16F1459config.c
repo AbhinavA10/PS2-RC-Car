@@ -1,3 +1,13 @@
+/*==============================================================================
+	RC Car (PIC16F1459) configuration bit settings.
+
+	Processor configuration bits determine processor operating characteristics
+	as well as processor-specific features. Refer to the processor datasheet
+	for details on specific configuration bit settings.
+
+	MPLAB X contains a 'Configuration Bits' settings tool accessed under:
+	Window menu -> PIC Memory Views. This tool generated the settings, below.
+==============================================================================*/
 
 // PIC16F1459 Configuration Bit Settings
 
