@@ -21,9 +21,6 @@
 
 /*TODOLIST:
  * comments
- * converting clock freq. to timespent
- * is it better to do bitwise ops/shifts everytime, or just pre-program, and then anding it? (mask etc (gamdev url). or current setup)
- * verify bitwise logic of is pressed function
  * verify command sequencing with CuriousInventor page
  */
 
@@ -109,7 +106,7 @@ unsigned char SendCMD_ReceiveDATA(unsigned char cmd) {
         } else {
             CMDLINE = 0; //send a 0 by setting CMDLine Low
         }
-        __delay_us(2);
+        __delay_us(1);
 
         cmd = cmd >> 1; //shift command byte over, for the next bit when looped
 
@@ -117,7 +114,7 @@ unsigned char SendCMD_ReceiveDATA(unsigned char cmd) {
         if (DATALINE == 1) {
             dat = (dat | 0b10000000); // add a value of 1 to the MSb of "data"
         }
-        __delay_us(2);
+        __delay_us(1);
         if (i != 1) dat = dat >> 1; // shift the contents over for the next bit if it's not the last bit
     }
     __delay_us(16);
