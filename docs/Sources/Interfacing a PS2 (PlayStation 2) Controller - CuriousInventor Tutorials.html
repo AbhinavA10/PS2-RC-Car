@@ -1,0 +1,1811 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0044)http://store.curiousinventor.com/guides/PS2/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="svg-magic"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style id="magiczoom-reset-css" type="text/css"></style>
+
+<title>Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="How to interface a PS2 controller, including wiring diagram, communication protocol, sample code">
+<meta name="keywords" content="PS2, Protocol, Interface, Wiring Diagram, Commands">
+<meta name="robots" content="INDEX,FOLLOW">
+<link rel="icon" href="http://store.curiousinventor.com/media/favicon/default/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="http://store.curiousinventor.com/media/favicon/default/favicon.ico" type="image/x-icon">
+<!--[if lt IE 7]>
+<script type="text/javascript">
+//<![CDATA[
+    var BLANK_URL = 'http://store.curiousinventor.com:80/js/blank.html';
+    var BLANK_IMG = 'http://store.curiousinventor.com:80/js/spacer.gif';
+//]]>
+</script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/bootstrap.min.css" media="all">
+<link rel="stylesheet" type="text/css" href="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/mgmenu.css" media="all">
+<link rel="stylesheet" type="text/css" href="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/style.css" media="all">
+<link rel="stylesheet" type="text/css" href="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/yamm.css" media="all">
+<link rel="stylesheet" type="text/css" href="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/responsive-tabs.css" media="all">
+<link rel="stylesheet" type="text/css" href="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/style-tab.css" media="all">
+<link rel="stylesheet" type="text/css" href="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/slick.css" media="all">
+<link rel="stylesheet" type="text/css" href="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/magiczoom.css" media="all">
+<link rel="stylesheet" type="text/css" href="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/categories.css" media="all">
+<script async="" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/analytics.js.download"></script><script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/prototype.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/ccard.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/validation.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/builder.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/effects.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/dragdrop.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/controls.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/slider.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/js.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/form.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/menu.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/translate.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/cookies.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/jquery.min.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/bootstrap.min.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/minicart.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/slick.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/jquery.responsiveTabs.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/product-page.js.download"></script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/magiczoom.js.download"></script>
+<!--[if lt IE 8]>
+<link rel="stylesheet" type="text/css" href="http://store.curiousinventor.com:80/skin/frontend/base/default/css/styles-ie.css" media="all" />
+<![endif]-->
+<!--[if lt IE 7]>
+<script type="text/javascript" src="http://store.curiousinventor.com:80/js/lib/ds-sleight.js"></script>
+<script type="text/javascript" src="http://store.curiousinventor.com:80/skin/frontend/base/default/js/ie6.js"></script>
+<![endif]-->
+
+<script type="text/javascript">
+//<![CDATA[
+Mage.Cookies.path     = '/';
+Mage.Cookies.domain   = '.store.curiousinventor.com';
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+optionalZipCountries = ["HK","IE","MO","PA"];
+//]]>
+</script>
+            <!-- BEGIN GOOGLE UNIVERSAL ANALYTICS CODE -->
+        <script type="text/javascript">
+        //<![CDATA[
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            
+ga('create', 'UA-2286994-2', 'auto');
+
+ga('send', 'pageview');
+            
+        //]]>
+        </script>
+        <!-- END GOOGLE UNIVERSAL ANALYTICS CODE -->
+    <script type="text/javascript">//<![CDATA[
+        var Translator = new Translate([]);
+        //]]></script><script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/promotions.js.download"></script></head>
+<body class=" cms-page-view cms-guides-ps2">
+<div class="wrapper">
+        <noscript>
+        &lt;div class="global-site-notice noscript"&gt;
+            &lt;div class="notice-inner"&gt;
+                &lt;p&gt;
+                    &lt;strong&gt;JavaScript seems to be disabled in your browser.&lt;/strong&gt;&lt;br /&gt;
+                    You must have JavaScript enabled in your browser to utilize the functionality of this website.                &lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    </noscript>
+    <div class="page container-fluid set-max-width">
+        <div class="row">
+    <div class="container header-container">
+        <div class="col-md-6 logo">
+            <a href="http://store.curiousinventor.com/"><img src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/logo.gif" alt="CuriousInventor.com Logo"></a>
+            <span class="first">
+                <script async="" src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- CI_Header_responsive -->
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8346606057355350" data-ad-slot="8414509283" data-ad-format="auto"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </span>
+        </div>
+        <div class="tel-no-991-less">
+            <span>
+                <script async="" src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- CI_Header_responsive -->
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8346606057355350" data-ad-slot="8414509283" data-ad-format="auto"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </span>
+        </div>
+        <div class="col-md-6 text-center upper-menu-h">
+            <div class="upper-menu">
+                <ul>
+                    <li><a href="http://store.curiousinventor.com/customer/account/">My Account</a></li>
+                    <li><a href="http://store.curiousinventor.com/checkout/cart/">My Cart</a></li>
+                    <li><a href="http://store.curiousinventor.com/firecheckout/">Checkout</a></li>
+                    <li><a href="http://store.curiousinventor.com/blog/">Blog</a></li>
+                    <li>
+                        <a href="http://store.curiousinventor.com/customer/account/">Log In</a>                    </li>
+                </ul>
+            </div>
+        </div>
+        <form id="search_mini_form" action="http://store.curiousinventor.com/catalogsearch/result/" method="get">
+    <div class="col-md-6 text-right search-height">
+
+        <input id="search" placeholder="Search in Store..." type="text" name="q" value="" class="input-text search" maxlength="128" autocomplete="off">
+        <button type="submit" title="Search" class="button search-transparent-button"><span><span>Search</span></span></button>
+        <div id="search_autocomplete" class="search-autocomplete" style="display: none;"></div>
+        <script type="text/javascript">
+            //<![CDATA[
+            var searchForm = new Varien.searchForm('search_mini_form', 'search', 'Search entire store here...');
+            searchForm.initAutocomplete('http://store.curiousinventor.com:80/catalogsearch/ajax/suggest/', 'search_autocomplete');
+            //]]>
+        </script>
+    </div>
+</form>
+
+        <div class="col-md-12 tel-no-1200-less">
+            <span>
+                <script async="" src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- CI_Header_responsive -->
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8346606057355350" data-ad-slot="8414509283" data-ad-format="auto"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </span>
+        </div>
+    </div>
+</div>
+
+<!--navigation-->
+<div class="row navi-back">
+    <div class="container">
+        <div class="col-md-12 navi-height">
+            <style>
+
+
+</style>
+
+
+
+
+    <nav class="navbar navbar-default text-right" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <button type="button" class="navbar-toggle media-position">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <div class="clearfix"></div>
+        <div class="nav-container mgmenu_container" id="mgmenu1">
+            <ul class="mgmenu"><!-- Begin Mega Menu -->
+                <li><a href="http://store.curiousinventor.com/guides"><span>Guides</span></a></li>
+                <li><a href="http://store.curiousinventor.com/blog"><span>Blog</span></a></li>
+                <li><a href="http://soldering.curiousinventor.com/"><span>Soldering Q &amp; A</span></a></li>
+                <li>
+                    <span>Products <span class="prod-click" style="float: right"><img src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/wh-down.png"></span></span>
+
+                    <div class="dropdown_fullwidth mgmenu_tabs" style="">
+                        <div class="drop-background">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="row dp_bg">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="row">
+                                                                                                                                                                                                                                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 item-container" style="height: 325px;">
+                                                                                                        <!--start main category megamenu display check-->
+
+                                                                                                                                                                <div class="level1-heading">
+                                                            <a href="http://store.curiousinventor.com/top-sellers.html">
+                                                                                                                                    <img src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/logo.png" alt="Top Sellers">
+                                                                                                                                <div>Top Sellers</div>
+                                                            </a>
+                                                        </div>
+                                                                                                            
+                                                    
+                                                                                                                                                        <!--start main category megamenu display check-->
+
+                                                                                                                                                                <div class="level1-heading">
+                                                            <a href="http://store.curiousinventor.com/soldering.html">
+                                                                                                                                    <img src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/Soldering_Iron_Stand.jpg" alt="Soldering">
+                                                                                                                                <div>Soldering</div>
+                                                            </a>
+                                                        </div>
+                                                                                                            
+                                                    
+                                                                                                                                                        <!--start main category megamenu display check-->
+
+                                                                                                                                                                <div class="level1-heading">
+                                                            <a href="http://store.curiousinventor.com/surface-mount-soldering-smd-smt.html">
+                                                                                                                                <div>Surface Mount Soldering (SMD / SMT)</div>
+                                                            </a>
+                                                        </div>
+                                                                                                            
+                                                    
+                                                                                                                                                        <!--start main category megamenu display check-->
+
+                                                                                                                                                                <div class="level1-heading">
+                                                            <a href="http://store.curiousinventor.com/voice-of-saturn-modular.html">
+                                                                                                                                <div>Voice of Saturn Modules</div>
+                                                            </a>
+                                                        </div>
+                                                                                                            
+                                                    
+                                                                                                                                                        <!--start main category megamenu display check-->
+
+                                                                                                                                                                <div class="level1-heading">
+                                                            <a href="http://store.curiousinventor.com/arduino.html">
+                                                                                                                                <div>Arduino &amp; Shields </div>
+                                                            </a>
+                                                        </div>
+                                                                                                            
+                                                                                                            </div>
+                                                                                                            
+                                                                                                                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 item-container" style="height: 325px;">
+                                                                                                        <!--start main category megamenu display check-->
+
+                                                                                                                                                                <div class="level1-heading">
+                                                            <a href="http://store.curiousinventor.com/pluggable-bread-board-modules.html">
+                                                                                                                                <div>Pluggin Bread Board Modules</div>
+                                                            </a>
+                                                        </div>
+                                                                                                            
+                                                    
+                                                                                                                                                        <!--start main category megamenu display check-->
+
+                                                                                                                                                                <div class="level1-heading">
+                                                            <a href="http://store.curiousinventor.com/tools.html">
+                                                                                                                                <div>Tools</div>
+                                                            </a>
+                                                        </div>
+                                                                                                            
+                                                    
+                                                                                                                                                        <!--start main category megamenu display check-->
+
+                                                                                                                                                                <div class="level1-heading">
+                                                            <a href="http://store.curiousinventor.com/all-kits.html">
+                                                                                                                                <div>All Kits</div>
+                                                            </a>
+                                                        </div>
+                                                                                                            
+                                                    
+                                                                                                                                                        <!--start main category megamenu display check-->
+
+                                                                                                                                                                <div class="level1-heading">
+                                                            <a href="http://store.curiousinventor.com/dvd-soldering-metal-working.html">
+                                                                                                                                <div>DVD: Soldering &amp; Metal Working</div>
+                                                            </a>
+                                                        </div>
+                                                                                                            
+                                                    
+                                                                                                                                                        <!--start main category megamenu display check-->
+
+                                                                                                                                                                <div class="level1-heading">
+                                                            <a href="http://store.curiousinventor.com/metal-working.html">
+                                                                                                                                <div>Metal Working</div>
+                                                            </a>
+                                                        </div>
+                                                                                                            
+                                                                                                            </div>
+                                                                                                            
+                                                                                                                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 item-container" style="height: 325px;">
+                                                                                                        <!--start main category megamenu display check-->
+
+                                                                                                                                                                <div class="level1-heading">
+                                                            <a href="http://store.curiousinventor.com/softpot-touch-sensors.html">
+                                                                                                                                <div>Softpot Touch Sensors</div>
+                                                            </a>
+                                                        </div>
+                                                                                                            
+                                                    
+                                                                                                                                                        <!--start main category megamenu display check-->
+
+                                                                                                                                                                <div class="level1-heading">
+                                                            <a href="http://store.curiousinventor.com/cases-including-monome-and-arduinome.html">
+                                                                                                                                <div>Cases Including Monome and Arduinome</div>
+                                                            </a>
+                                                        </div>
+                                                                                                            
+                                                    
+                                                                                                                                                        <!--start main category megamenu display check-->
+
+                                                                                                                                                                <div class="level1-heading">
+                                                            <a href="http://store.curiousinventor.com/vises-holders-and-helping-hands.html">
+                                                                                                                                <div>Vises, Holders, and Helping Hands</div>
+                                                            </a>
+                                                        </div>
+                                                                                                            
+                                                    
+                                                                                                                                                        <!--start main category megamenu display check-->
+
+                                                                                                                                                                <div class="level1-heading">
+                                                            <a href="http://store.curiousinventor.com/electronic-components.html">
+                                                                                                                                <div>Electronic Components</div>
+                                                            </a>
+                                                        </div>
+                                                                                                            
+                                                    
+                                                                                                                                                        <!--start main category megamenu display check-->
+
+                                                                                                                                                                <div class="level1-heading">
+                                                            <a href="http://store.curiousinventor.com/hardware.html">
+                                                                                                                                <div>Hardware</div>
+                                                            </a>
+                                                        </div>
+                                                                                                            
+                                                                                                            </div>
+                                                                                                            
+                                                                                                                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="http://store.curiousinventor.com/contacts"><span>Contact Us</span></a></li>
+            </ul>
+        </div>
+
+    </nav>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $j( window ).resize(function() {
+
+    });
+</script>
+        <div class="row">
+            <div class="main-container col1-layout">
+                <div class="container">
+                    <div class="main">
+                        
+<!--breadcrumb-->
+<div class="row">
+    <div class="container">
+        <div class="breadcrumb-navi top-margin-15px bottom-margin-15px">
+            <span>
+                                                            <a href="http://store.curiousinventor.com/" title="Go to Home Page">Home</a>
+                                                                <span> / </span>
+                                                                                <span class="breadcrumb-active">Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials</span>
+                                                                    </span>
+        </div>
+    </div>
+</div>
+
+
+                        <div class="col-main">
+                                                        <div class="std"><div id="guides">
+<div id="guide_directory"><a href="http://store.curiousinventor.com/guides">back to Guides contents</a></div>
+<h1 id="main_section_title">Interfacing a PS2 (PlayStation 2) Controller</h1>
+<p><strong>Intro:</strong> There are <a href="http://www.hardwarebook.info/Sony_Playstation_Controller_Port">all</a> <a href="http://www.lynxmotion.com/images/files/ps2cmd01.txt">sorts</a> <a href="http://users.ece.gatech.edu/~hamblen/489X/f04proj/USB_PSX/psx_protocol.html">of</a> <a href="http://docs.google.com/View?docid=ddbmmwds_5cw4pk3">guides</a> <a href="http://sophiateam.undrgnd.free.fr/psx/index.html">that</a> <a href="http://www.geocities.com/digitan000/Hardware/22/e22_page.html">explain</a> <a href="http://www.gamesx.com/controldata/psxcont/psxcont.htm">how</a> <a href="http://www.raphnet.net/electronique/psx_adaptor/Playstation.txt">to</a> interface a PS2 controller already out there. The goal here is to consolidate the information and make it as fast as possible to get up and running. Please let us know about mistakes!</p>
+<p><span style="color: #800000;"><strong>Update</strong></span>: Check out the <a href="http://www.billporter.info/?p=240">arduino ps2 library</a> that Bill Porter helped polish.</p>
+<p><strong>Contents:</strong></p>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- square --> <ins class="adsbygoogle" style="display: inline-block; width: 300px; height: 250px;" data-ad-client="ca-pub-8346606057355350" data-ad-slot="4872837680"></ins>
+<script type="text/javascript">// <![CDATA[
+(adsbygoogle = window.adsbygoogle || []).push({});
+// ]]></script>
+<ul>
+<li><a href="http://store.curiousinventor.com/guides/PS2/#hardware">Hardware Interface / Wiring Connections</a></li>
+<li>Software Protocol
+<ul>
+<li><a href="http://store.curiousinventor.com/guides/PS2/#low_level">Low Level</a>: how individual bytes are transfered</li>
+<li><a href="http://store.curiousinventor.com/guides/PS2/#high_level">high level</a>: packet descriptions / protocol</li>
+<li><a href="http://store.curiousinventor.com/guides/PS2/#mappings">Button Mappings</a> for PS2 Dual Shock controller and Guitar Hero controller.</li>
+<li><a href="http://store.curiousinventor.com/guides/PS2/#commands">Complete Command</a> listing and explanations.</li>
+</ul>
+</li>
+<li><a href="http://store.curiousinventor.com/guides/PS2/#example">Example Commands</a> necessary to read all analog (joysticks and pressures) and control motors</li>
+<li><a href="http://store.curiousinventor.com/guides/PS2/#recording">Recorded Command and Response</a> between real PlayStation and Controller during first connect</li>
+<li><a href="http://store.curiousinventor.com/guides/PS2/#MPLAB">MPLAB projects</a> (c code) for PIC18f4550 to control a PS2. You'll need a programmer (PICKIT2) and www.microchip.com 's free IDE, MPLAB.</li>
+</ul>
+<a name="hardware"></a>
+<h2>Hardware Interface / Wiring Connections:</h2>
+<img src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/wiring.jpg" alt="playstation ps2 wiring connections interface protocol">
+<div style="margin-top: 25px; margin-bottom: 15px;">
+<script type="text/javascript">// <![CDATA[
+google_ad_client = "pub-8346606057355350";
+/* 728x90, created 6/15/08 */
+google_ad_slot = "7462792357";
+google_ad_width = 728;
+google_ad_height = 90;
+// ]]></script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">// <![CDATA[
+
+// ]]></script>
+</div>
+<p><strong>Wire Colors and Functionality:</strong> There are 9 wires, 6 wires are needed at a minimum to talk to the controller: (clock, data, command, power &amp; ground, attention). To operate vibration motors, motor_power is also needed.</p>
+<ol style="font-size: 12px;">
+<li><strong>Brown - Data:</strong> Controller -&gt; PlayStation. This is an <a href="http://en.wikipedia.org/wiki/Open_collector">open collector output</a> and requires a pull-up resistor (1 to 10k, maybe more). (A pull-up resistor is needed because the controller can only connect this line to ground; it can't actually put voltage on the line).</li>
+<li><strong>Orange - Command:</strong> PlayStation -&gt; Controller.</li>
+<li><strong>Grey - Vibration Motors Power:</strong> 6-9V? With no controller connected, this meausures about 7.9V, with a controller, 7.6V, most websites say this is 9V (except <a href="http://www.raphnet.net/electronique/psx_adaptor/Playstation.txt">playstation.txt</a> -&gt; 7.6V), although it will still drive the motors down around 4V, although somewhat slower. When the motors are first engaged, almost 500mA is drawn on this line, and at steady state full power, ~300mA is drawn.</li>
+<li><strong>Black - Ground</strong></li>
+<li><strong>Red - Power:</strong> Many sites label this as 5V, and while this may be true for Play Station 1 controllers, we found several wireless brands that would only work at 3.3V. Every controller tested worked at 3.3V, and the actual voltage measured on a live Playstation talking to a controller was 3.4V. <a href="http://www.gamesx.com/controldata/psxcont/psxcont.htm">McCubbin</a> says that any official Sony controller should work from 3-5V. Most sites say there is a 750mA fuse for both controllers and memory cards, although this may only apply to PS1's since 4 dual shock controllers could exceed that easily.</li>
+<li><strong>Yellow - Attention:</strong> This line must be pulled low before each group of bytes is sent / received, and then set high again afterwards. In our testing, it wasn't sufficient to tie this permanently low--it had to be driven down and up around each set. <a href="http://www.geocities.com/digitan000/Hardware/22/e22_page.html">Digitan</a> considers this a "Chip Select" or "Slave Select" line that is used to address different controllers on the same bus.</li>
+<li><strong>Blue - Clock:</strong> 500kH/z, normally high on. The communication appears to be <a href="http://en.wikipedia.org/wiki/Serial_Peripheral_Interface_Bus">SPI </a> bus. We've gotten it to work from less than 100kHz up through 500kHz (500k bits / second, not counting delays between bytes and packets). When the guitar hero controller is connected, the clock rate is 250kHz, which is also the rate the playstation 1 uses.</li>
+<li><strong>White - Unknown</strong></li>
+<li><strong>Green - Acknowledge:</strong> This normally high line drops low about 12us after each byte for half a clock cycle, but not after the last bit in a set. This is a <a href="http://en.wikipedia.org/wiki/Open_collector">open collector output</a> and requires a pull-up resistor (1 to 10k, maybe more). <a href="http://www.raphnet.net/electronique/psx_adaptor/Playstation.txt">playstation.txt</a> says that the playstation will consider the controller missing if the ack signal (&gt; 2us) doesn't come within 100us.</li>
+</ol><a name="low_level"></a>
+<h2>Low-Level - How Bytes and Packets are Transferred:</h2>
+<p>The play station sends a byte at the same time as it receives one (full duplex) via serial communication. The following pictures show actual signals between a playstation and guitar hero controller configured in analog mode (wammy bar sends back 7-bit value (0x7f - 0x00)).</p>
+<img src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/annotated_scope.jpg" alt="play station controller communication signals on scope">
+<p>The clock is held high until a byte is to be sent. It then drops low (active low) to start 8 cylces during which data is simultaneously sent and received. When the clock edge drops low, the values on the line start to change. When the clock goes from low to high, value are actually read. Bytes are transferred LSB (least significant bit) first, so the bits on the left (earlier in time) are less significant.</p>
+<table border="0">
+<tbody>
+<tr>
+<td><a href="http://store.curiousinventor.com/images/guides/ps2/scope_ack_cmd_dat_clk_gh.jpg"><img src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/scope_ack_cmd_dat_clk_gh_30.jpg" alt="playstation acknowldge, command, data, and clock"> </a></td>
+<td><a href="http://store.curiousinventor.com/images/guides/ps2/scope_att_cmd_dat_clk_gh.jpg"><img src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/scope_att_cmd_dat_clk_gh_30.jpg" alt="playstation attention, command, data, and clock"> </a></td>
+</tr>
+</tbody>
+</table>
+<p>Scope shots showing the acknowledge and attention lines.</p>
+<a name="high_level"></a>
+<h2>High-level: Packet structure, Command and Data Meanings:</h2>
+<p>Much of this section is sourced from <a href="https://gist.github.com/scanlime/5042071">Dowty's</a> consolidation and home-brew port sniffer and emulator.</p>
+<p>Packets have a three byte header followed by an additional 2, 6 or 18 bytes of additional command and controller data (like button states, vibration motor commands, button pressures, etc.).</p>
+<h3>An example exchange that from a dual shock controller when first plugged in:</h3>
+<p>Controller defaults to digital mode and only transmits the on / off status of the buttons in the 4th and 5th byte. No joystick data, pressure or vibration control capabilities.</p>
+<p>&nbsp;</p>
+<p>(no buttons pressed)</p>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr>
+<td class="right"><strong>Command</strong></td>
+<td>0x01</td>
+<td>0x42</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td class="right"><strong>Data</strong></td>
+<td>0xFF</td>
+<td>0x41</td>
+<td>0x5A</td>
+<td>0xFF</td>
+<td>0xFF</td>
+</tr>
+</tbody>
+</table>
+<h3>Explanation:</h3>
+<h4>-- Header: (always the first three bytes)</h4>
+<p>&nbsp;</p>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td>byte #</td>
+<td>source / <br>type</td>
+<td>example<br>value</td>
+<td>explanation</td>
+</tr>
+<tr>
+<td rowspan="2"><strong>1st byte</strong></td>
+<td>Command</td>
+<td>0x01</td>
+<td>New packets always start with 0x01 ... 0x81 for memory card?</td>
+</tr>
+<tr class="bot">
+<td>Data</td>
+<td>0xFF</td>
+<td>always 0xFF</td>
+</tr>
+<tr>
+<td rowspan="2"><strong>2nd byte</strong></td>
+<td>Command</td>
+<td>0x42</td>
+<td><strong>Main command:</strong> can either poll controller or configure it.<br>See below for command listing</td>
+</tr>
+<tr class="bot">
+<td>Data</td>
+<td>0x41</td>
+<td><strong>Device Mode:</strong> the high nibble (4) indicates the mode (0x4 is digital, 0x7 is analog, 0xF config / escape?),<br>(lynxmotion calls 0xF 'DS Native Mode'... not sure) <br>the lower nibble (1) is how many 16 bit words follow the header,<br>although the playstation doesn't always wait for all these bytes</td>
+</tr>
+<tr>
+<td rowspan="2"><strong>3rd byte</strong></td>
+<td>Command</td>
+<td>0x00</td>
+<td>Always 0x00</td>
+</tr>
+<tr>
+<td>Data</td>
+<td>0x5A</td>
+<td>Always 0x5A, this value appears in several non-functional places</td>
+</tr>
+</tbody>
+</table>
+<h4>-- Command / Mode Dependent Data (2 to 18 more bytes depending on mode):</h4>
+<table border="1px">
+<tbody>
+<tr>
+<td rowspan="2"><strong>4th byte</strong></td>
+<td>Command</td>
+<td width="50">0x00</td>
+<td>Can be configured to control either of the motors</td>
+</tr>
+<tr class="bot">
+<td>Data</td>
+<td>0xFF</td>
+<td>Each digital (on/off) button state is mapped to one of the bits in the 4th and 5th byte</td>
+</tr>
+<tr>
+<td rowspan="2"><strong>5th byte</strong></td>
+<td>Command</td>
+<td>0x00</td>
+<td>Can be configured to control either of the motors</td>
+</tr>
+<tr>
+<td>Data</td>
+<td>0xFF</td>
+<td>1, or all 1's (0xFF) means everything is unpressed.</td>
+</tr>
+</tbody>
+</table>
+<a name="mappings"></a>
+<h3>Digital Button State Mapping (which bits of bytes 4 &amp; 5 goes to which button):</h3>
+<table border="1px">
+<tbody>
+<tr class="bot">
+<td><strong>button</strong></td>
+<td>Select</td>
+<td>L3 (jush push)</td>
+<td>R3</td>
+<td>Start</td>
+<td>Up</td>
+<td>Right</td>
+<td>Down</td>
+<td>Left</td>
+<td>L2</td>
+<td>R2</td>
+<td>L1</td>
+<td>R1</td>
+<td>Triangle</td>
+<td>O</td>
+<td>X</td>
+<td>Square</td>
+</tr>
+<tr>
+<td><strong>byte.bit</strong></td>
+<td>4.0</td>
+<td>4.1</td>
+<td>4.2</td>
+<td>4.3</td>
+<td>4.4</td>
+<td>4.5</td>
+<td>4.6</td>
+<td>4.7</td>
+<td>5.0</td>
+<td>5.1</td>
+<td>5.2</td>
+<td>5.3</td>
+<td>5.4</td>
+<td>5.5</td>
+<td>5.6</td>
+<td>5.7</td>
+</tr>
+</tbody>
+</table>
+<p>For example:</p>
+<img src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/digital_button_press_exampl.gif" alt="example play station clock and data signals when Up and R2 are pressed">
+<h3>Guitar Hero Button Mapping</h3>
+<table border="1px">
+<tbody>
+<tr class="bot">
+<td><strong>button</strong></td>
+<td>Green</td>
+<td>Red</td>
+<td>Yellow</td>
+<td>Blue</td>
+<td>Orange</td>
+<td>Up</td>
+<td>Down</td>
+<td>Select</td>
+<td>Start</td>
+<td>Wammy</td>
+</tr>
+<tr>
+<td><strong>byte.bit</strong></td>
+<td>5.1</td>
+<td>5.5</td>
+<td>5.4</td>
+<td>5.6</td>
+<td>5.7</td>
+<td>4.4</td>
+<td>4.6</td>
+<td>4.0</td>
+<td>4.3</td>
+<td>byte 9: 0x7f (released) to 0x00 (pressed)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Bytes 4, 6, 7, 8 and 9 are normally 0x7F if nothing is pressed.</li>
+</ul>
+<div style="margin-top: 25px; margin-bottom: 15px;">&nbsp;</div>
+<a name="commands"></a>
+<h3>Command Listing / Examples:</h3>
+<p>The most comprehensive listings that we've found are <a href="http://docs.google.com/View?docid=ddbmmwds_5cw4pk3">Dowty's</a> and <a href="http://www.lynxmotion.com/images/files/ps2cmd01.txt">lynxmotion's</a>. This listing is based on information from both that has been tested.</p>
+<h4>-- 0x41: Find out what buttons are included in poll responses.</h4>
+<p>The controller can be configured (through command 0x4F) to respond with more or less information about each button with each poll. Only works when the controller is already in configuration mode (0xF3)... use Command 0x43 to enter / exit configuration mode.</p>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td class="right"><strong>Command</strong></td>
+<td>0x01</td>
+<td>0x41</td>
+<td>0x00</td>
+<td>0x5A</td>
+<td>0x5A</td>
+<td>0x5A</td>
+<td>0x5A</td>
+<td>0x5A</td>
+<td>0x5A</td>
+</tr>
+<tr>
+<td class="right"><strong>Data</strong></td>
+<td>0xFF</td>
+<td>0x41</td>
+<td>0x5A</td>
+<td>0xFF</td>
+<td>0xFF</td>
+<td>0x03</td>
+<td>0x00</td>
+<td>0x00</td>
+<td>0x5A</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="6">bits corresponding to buttons in response packet</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>18 total bytes can be turned on or off, including the 2 digital state bytes and 16 analog bytes (pressures and joysticks).</li>
+<li>9.cmd and 9.dat are always 0x5a.</li>
+<li>Data is all 0x00 if controller is in digital mode (0x41)</li>
+<li>Command data is always 0x5A, although 0x00 yields the same result.</li>
+</ul>
+<h4>-- 0x42: Main polling command</h4>
+<p>Depending on the controller's configuration, this command can get all the digital and analog button states, as well as control the vibration motors.</p>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+<td>10</td>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+<td>16</td>
+<td>17</td>
+<td>18</td>
+<td>19</td>
+<td>20</td>
+<td>21</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>42</td>
+<td>00</td>
+<td>WW</td>
+<td>YY</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>79</td>
+<td>5A</td>
+<td>FF</td>
+<td>FF</td>
+<td>7F</td>
+<td>7F</td>
+<td>7F</td>
+<td>7F</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="2">digital</td>
+<td colspan="4">analog joy</td>
+<td colspan="12">button pressures (0xFF = fully pressed)</td>
+</tr>
+<tr>
+<td class="right"><strong>analog map</strong></td>
+<td colspan="5">&nbsp;</td>
+<td>RX</td>
+<td>RY</td>
+<td>LX</td>
+<td>LY</td>
+<td>R</td>
+<td>L</td>
+<td>U</td>
+<td>D</td>
+<td>Tri</td>
+<td>O</td>
+<td>X</td>
+<td>Sqr</td>
+<td>L1</td>
+<td>R1</td>
+<td>L2</td>
+<td>R2</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>If mode (2.data) is 41, the packet only contains 5 bytes, if mode == 0x73, 9 bytes are returned.</li>
+<li>WW and YY are used to control the motors (which does what depends on the config).</li>
+</ul>
+<h4>-- 0x43: Enter / Exit Config Mode, also poll all button states, joysticks and pressures</h4>
+<p>This can poll the controller like 0x42, but if the first command byte is 1, it has the effect of entering config mode (0xF3), in which the packet response can be configured. If the current mode is 0x41, this command only needs to be 5 bytes long. Once in config / escape mode, 0x43 does not return button states anymore, but 0x42 still does (except for pressures). Also, all packets have will 6 bytes of command / data after the header.</p>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+<td>10</td>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+<td>16</td>
+<td>17</td>
+<td>18</td>
+<td>19</td>
+<td>20</td>
+<td>21</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>43</td>
+<td>00</td>
+<td><strong>0x01</strong></td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>79</td>
+<td>5A</td>
+<td>FF</td>
+<td>FF</td>
+<td>7F</td>
+<td>7F</td>
+<td>7F</td>
+<td>7F</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="2">digital</td>
+<td colspan="4">analog joy</td>
+<td colspan="12">button pressures (0xFF = fully pressed)</td>
+</tr>
+<tr>
+<td class="right"><strong>analog map</strong></td>
+<td colspan="5">&nbsp;</td>
+<td>RX</td>
+<td>RY</td>
+<td>LX</td>
+<td>LY</td>
+<td>R</td>
+<td>L</td>
+<td>U</td>
+<td>D</td>
+<td>Tri</td>
+<td>O</td>
+<td>X</td>
+<td>Sqr</td>
+<td>L1</td>
+<td>R1</td>
+<td>L2</td>
+<td>R2</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>4.command = 0x01 enters config mode (or 'escape' mode at Dowty calls it)., 0x00 exits. If 0x00 and already out of config mode, it behaves just like 0x42, but without vibration motor control.</li>
+</ul>
+<h4>-- 0x44: Switch modes between digital and analog</h4>
+<p>Only works after the controller is in config mode (0xF3).</p>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>44</td>
+<td>00</td>
+<td><strong>0x01</strong></td>
+<td><strong>0x03</strong></td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>F3</td>
+<td>5A</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="6">config parameters</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Set analog mode: 4.command = 0x01, set digital mode: 4.command = 0x00</li>
+<li>If 5.command is 0x03, the controller is locked, otherwise the user can change from analog to digital mode using the analog button on the controller. Note that if the controller is already setup to deliver pressure values, toggling the state with the controller button will revert the controller back into not sending pressures.</li>
+<li>Some controllers have a watch-dog timer that reverts back into digital mode if a command is not received within a second or so.</li>
+</ul>
+<h4>-- 0x45: Get more status info</h4>
+<p>Only works after the controller is in config mode (0xF3).</p>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>45</td>
+<td>00</td>
+<td>5A</td>
+<td>5A</td>
+<td>5A</td>
+<td>5A</td>
+<td>5A</td>
+<td>5A</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>F3</td>
+<td>5A</td>
+<td><strong>03</strong></td>
+<td>02</td>
+<td><strong>01</strong></td>
+<td>02</td>
+<td>01</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="6">config parameters</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>4.data = 0x03 for dual shock controller, 0x01 for guitar hero</li>
+<li>6.data = 0x01 when LED is on, 0x00 when it's off</li>
+</ul>
+<h4>-- 0x46: Read an unknown constant value from controller</h4>
+<p>This command is always issued twice in a row, and appears to be retrieving a 10 byte constant of over those two calls. It is always called in a sequence of 0x46 0x46 0x47 0x4C 0x4C. Only works after the controller is in config mode (0xF3).</p>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>46</td>
+<td>00</td>
+<td><strong>00</strong></td>
+<td>5A</td>
+<td>5A</td>
+<td>A</td>
+<td>5A</td>
+<td>5A</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>F3</td>
+<td>5A</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>02</td>
+<td>00</td>
+<td>0A</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="6">config parameters</td>
+</tr>
+</tbody>
+</table>
+second pass
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>46</td>
+<td>00</td>
+<td><strong>01</strong></td>
+<td>5A</td>
+<td>5A</td>
+<td>A</td>
+<td>5A</td>
+<td>5A</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>F3</td>
+<td>5A</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>14</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="6">config parameters</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>4.command appears to get the first half of the constant when it's 0x00, and the 2nd half when it's 0x01.</li>
+<li>As shown above, the constant returned for a dual shock controller is: 00 00 02 00 0A &nbsp;&nbsp; 00 00 00 00 14</li>
+<li>A Katana wireless controller and the guitar hero controller each returned this: 00 01 02 00 0A &nbsp;&nbsp; 00 01 01 01 14</li>
+</ul>
+<h4>-- 0x47: Read an unknown constant value from controller</h4>
+<p>It is always called in a command sequence of 0x46 0x46 0x47 0x4C 0x4C. Only works after the controller is in config mode (0xF3).</p>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>47</td>
+<td>00</td>
+<td><strong>00</strong></td>
+<td>5A</td>
+<td>5A</td>
+<td>A</td>
+<td>5A</td>
+<td>5A</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>F3</td>
+<td>5A</td>
+<td>00</td>
+<td>00</td>
+<td>02</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="6">config parameters</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Dowty thinks the first byte is probably an offset like in 0x46 and 0x4C, which would leave 5 bytes of interest.</li>
+<li>As shown above, the constant returned for a dual shock controller is: 00 02 00 00 00</li>
+<li>guitar hero controller and Katana wireless: 00 02 00 01 00</li>
+</ul>
+<h4>-- 0x4C: Read an unknown constant value from controller</h4>
+<p>This command is always issued twice in a row, and appears to be retrieving a 10 byte constant of over those two calls. It is always called in a command sequence of 0x46 0x46 0x47 0x4C 0x4C. Only works after the controller is in config mode (0xF3).</p>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>4C</td>
+<td>00</td>
+<td><strong>00</strong></td>
+<td>5A</td>
+<td>5A</td>
+<td>A</td>
+<td>5A</td>
+<td>5A</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>F3</td>
+<td>5A</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>04</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="6">config parameters</td>
+</tr>
+</tbody>
+</table>
+second pass
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>4C</td>
+<td>00</td>
+<td><strong>01</strong></td>
+<td>5A</td>
+<td>5A</td>
+<td>A</td>
+<td>5A</td>
+<td>5A</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>F3</td>
+<td>5A</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>06</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="6">config parameters</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>4.command appears to get the first half of the constant when it's 0x00, and the 2nd half when it's 0x01.</li>
+<li>As shown above, the constant returned for a dual shock controller is: 00 00 04 00 00 &nbsp;&nbsp; 00 00 06 00 00</li>
+<li>A Katana wireless controller and the guitar hero controller each returned this: 00 00 04 00 00 &nbsp;&nbsp; 00 00 07 00 00</li>
+</ul>
+<h4>-- 0x4D: Map bytes in the 0x42 command to actuate the vibration motors</h4>
+<p>Only works after the controller is in config mode (0xF3).</p>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>4D</td>
+<td>00</td>
+<td><strong>00</strong></td>
+<td><strong>01</strong></td>
+<td>FF</td>
+<td>FF</td>
+<td>FF</td>
+<td>FF</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>F3</td>
+<td>5A</td>
+<td>00</td>
+<td>01</td>
+<td>FF</td>
+<td>FF</td>
+<td>FF</td>
+<td>FF</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="6">config parameters</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>0x00 maps the corresponding byte in 0x42 to control the small motor. A 0xFF in the 0x42 command will turn it on, all other values turn it off.</li>
+<li>0x01 maps the corresponding byte in 0x42 to control the large motor. The power delivered to the large motor is then set from 0x00 to 0xFF in 0x42. 0x40 was the smallest value that would actually make the motor spin for us.</li>
+<li>0xFF disables, and is the default value when the controller is first connected. The data bytes just report the current mapping.</li>
+<li>Things don't always work if more than one command byte is mapped to a motor.</li>
+</ul>
+<h4>-- 0x4F: Add or remove analog response bytes from the main polling command (0x42)</h4>
+<p>This could set up the controller to only reply with the L1 and R1 pressures for instance. Only works after the controller is in config mode (0xF3).</p>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>4F</td>
+<td>00</td>
+<td>FF</td>
+<td>FF</td>
+<td>03</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>F3</td>
+<td>5A</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>5A</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="6">config parameters</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Each of the 18 bits in FF FF 03 correspond to a response byte, starting with the digital states, then 4 analog joysticks, then 12 pressure bytes.</li>
+<li>By default, the pressure values are not sent back, so this is the command that is necessary to enable them.</li>
+</ul>
+<a name="example"></a>
+<h2>Byte Sequence to Configure Controller for Analog Mode + Button Pressure + Vibration Control</h2>
+<p>The following sequence will setup a controller to send back all available analog values, and also map the left and right motors to command bytes 4 and 5.</p>
+<div style="float: right;">&nbsp;</div>
+<h4>-- 0x42 Poll once just for fun</h4>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>42</td>
+<td>00</td>
+<td>FF</td>
+<td>FF</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>41</td>
+<td>5A</td>
+<td>FF</td>
+<td>FF</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="2">digital</td>
+</tr>
+</tbody>
+</table>
+<h4>-- 0x43 Go into configuration mode</h4>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>43</td>
+<td>00</td>
+<td><strong>0x01</strong></td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>41</td>
+<td>5A</td>
+<td>FF</td>
+<td>FF</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="2">digital</td>
+</tr>
+</tbody>
+</table>
+<h4>-- 0x44 Turn on analog mode</h4>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>44</td>
+<td>00</td>
+<td><strong>0x01</strong></td>
+<td><strong>0x03</strong></td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>F3</td>
+<td>5A</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="6">config parameters</td>
+</tr>
+</tbody>
+</table>
+<h4>-- 0x4D Setup motor command mapping</h4>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>4D</td>
+<td>00</td>
+<td><strong>00</strong></td>
+<td><strong>01</strong></td>
+<td>FF</td>
+<td>FF</td>
+<td>FF</td>
+<td>FF</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>F3</td>
+<td>5A</td>
+<td>00</td>
+<td>01</td>
+<td>FF</td>
+<td>FF</td>
+<td>FF</td>
+<td>FF</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="6">config parameters</td>
+</tr>
+</tbody>
+</table>
+<h4>-- 0x4F Config controller to return all pressure values</h4>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>4F</td>
+<td>00</td>
+<td>FF</td>
+<td>FF</td>
+<td>03</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>F3</td>
+<td>5A</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>5A</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="6">config parameters</td>
+</tr>
+</tbody>
+</table>
+<h4>-- 0x43 Exit config mode</h4>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>43</td>
+<td>00</td>
+<td><strong>0x00</strong></td>
+<td>5A</td>
+<td>5A</td>
+<td>5A</td>
+<td>5A</td>
+<td>5A</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>F3</td>
+<td>5A</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="6">config parameters</td>
+</tr>
+</tbody>
+</table>
+<h4>-- 0x42 Example Poll (loop this)</h4>
+<table border="1px">
+<tbody>
+<tr class="bot" style="font-weight: bold;">
+<td class="right">byte #</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+<td>10</td>
+<td>11</td>
+<td>12</td>
+<td>13</td>
+<td>14</td>
+<td>15</td>
+<td>16</td>
+<td>17</td>
+<td>18</td>
+<td>19</td>
+<td>20</td>
+<td>21</td>
+</tr>
+<tr>
+<td class="right"><strong>Command (hex)</strong></td>
+<td>01</td>
+<td>42</td>
+<td>00</td>
+<td>WW</td>
+<td>YY</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>Data (hex)</strong></td>
+<td>FF</td>
+<td>79</td>
+<td>5A</td>
+<td>FF</td>
+<td>FF</td>
+<td>7F</td>
+<td>7F</td>
+<td>7F</td>
+<td>7F</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+<td>00</td>
+</tr>
+<tr>
+<td class="right"><strong>section</strong></td>
+<td colspan="3">header</td>
+<td colspan="2">digital</td>
+<td colspan="4">analog joy</td>
+<td colspan="12">button pressures (0xFF = fully pressed)</td>
+</tr>
+<tr>
+<td class="right"><strong>analog map</strong></td>
+<td colspan="5">&nbsp;</td>
+<td>RX</td>
+<td>RY</td>
+<td>LX</td>
+<td>LY</td>
+<td>R</td>
+<td>L</td>
+<td>U</td>
+<td>D</td>
+<td>Tri</td>
+<td>O</td>
+<td>X</td>
+<td>Sqr</td>
+<td>L1</td>
+<td>R1</td>
+<td>L2</td>
+<td>R2</td>
+</tr>
+</tbody>
+</table>
+<a name="recording"></a>
+<h2>Hand-shaking (first communication) recordings between Play Station 2 and Various Controllers</h2>
+<p>This <a href="http://store.curiousinventor.com/media/code/cmd-data%20on%20startup_aligned.xls">excel sheet</a> lists both the commands and response data between a play station and various controllers when the controller is first plugged in. Includes guitar hero, dual shock, wire less katana and chinese knock-off (looks the same as the dual shock).</p>
+<p>Both a guitar hero game and dirt-bike game (to get vibration motor control data) were used.</p>
+<p>We used 2 PIC18f4550 to do the port sniffing, see below to download the code.</p>
+<a name="MPLAB"></a>
+<h2>PIC18f4550 Code to Read a PlayStation 2 Dual Shock or Guitar Hero Controller</h2>
+<p>The first program will configure a controller in analog mode so that all the joysticks and button pressures can be read. It also sets up the Left pressure to controller the left vibration motor and the Right button pressure to toggle the smaller right vibration motor.</p>
+<p>Each command and response packet is sent out a serial port at 57600 kbs.</p>
+<p><a href="http://store.curiousinventor.com/media/code/ps2_commander_reader.zip">ps2_commander_reader.zip</a></p>
+<p>The second program can operate in two modes:</p>
+<ul>
+<li><strong>Continous SPI to Serial:</strong> Every SPI byte is sent out the serial port at 57600. Since the play station communicates at 512kbs, the code uses a circular buffer to capture SPI bytes until the playstation pauses between packets, at which time it sends out the data via serial.</li>
+<li><strong>Bulk Capture and Dump:</strong> Caputer about 650 bytes of data into buffers, then dump the entire batch out through serial. We used this code to capture the initial communication between a Play Station and controller when they first connect. There are probably about 100 cleaner ways to do this, but the PICs we had on hand only had one SPI port, so two PICs were used at the same time to capture both the command and data lines. One PIC would send back it's recordings immediately, and the other would wait for a few seconds, during which time a switch was flipped to connect the PC's serial to the 2nd PIC.</li>
+</ul>
+<p><a href="http://store.curiousinventor.com/media/code/ps2_listener.zip">ps2_listener.zip</a></p>
+<p><strong>Connection Schematic:</strong></p>
+note: avoid connecting the PIC's SPI clock to a play station's clock when the PIC is configured as a SPI master.
+<p>&nbsp;</p>
+<img src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/pic_schematic.gif" alt="schematic ps2 to PIC18f4550"> <br><br></div></div>                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--footer-->
+<div class="row last-content">
+    <div class="col-md-12 triangle-image"></div>
+    <div class="col-md-12 footer-main">
+        <div class="container">
+            <div class="col-md-4 footer-content-padding">
+                <div class="footer-content">
+                    <h1><span>About</span></h1>
+                    <p>CuriousInventor launched in late 2006 (pre-arduino era!) as a place to enable hobbyists, students, and musicians to create their own technology. We sold open-source kits and tools, and offered numerous guides &amp; videos on things like soldering, metal working, screws, electronics, and more.&nbsp;</p>
+<p>The store is now mostly empty, but we've kept the product pages and guides up since they have useful information. Many of our guides and videos still rank on the first page of google searches and have been seen millions of times. Content on this site and the CuriousInventor YouTube channel produced by <span style="text-decoration: underline;"><span style="color: #ffffff;"><a href="http://scottdriscoll.me/"><span style="color: #ffffff; text-decoration: underline;">Scott Driscoll</span></a></span></span>.</p>                </div>
+                <div class="vline">
+                    <img src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/vline.jpg">
+                </div>
+            </div>
+            <div class="clearfix clf-hide"></div>
+            <hr class="hline">
+            <div class="col-md-4 footer-content-padding">
+                <div class="footer-content">
+                    <h1><span>Top</span> Videos</h1>
+                    <p><span style="text-decoration: underline;"><span style="color: #ffffff;"><a href="https://www.youtube.com/watch?v=I_NU2ruzyc4"><span style="color: #ffffff; text-decoration: underline;">How to Solder Electronics</span></a></span></span>&nbsp;(1.5m views) (<span style="text-decoration: underline;"><span style="color: #ffffff;"><a href="https://www.youtube.com/watch?v=IpkkfK937mU"><span style="color: #ffffff; text-decoration: underline;">free version</span></a></span></span>)</p>
+<p><span style="text-decoration: underline;"><span style="color: #ffffff;"><a href="https://www.youtube.com/watch?v=3NN7UGWYmBY"><span style="color: #ffffff; text-decoration: underline;">Surface Mount Soldering 101</span></a></span></span> (700k views)</p>
+<p><span style="text-decoration: underline;"><span style="color: #ffffff;"><a href="https://www.youtube.com/watch?v=Lx9zgZCMqXE"><span style="color: #ffffff; text-decoration: underline;">How Bitcoin Works under the Hood</span></a></span></span> (700k views)</p>                </div>
+                <div class="vline">
+                    <img src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/vline.jpg">
+                </div>
+            </div>
+            <div class="clearfix clf-hide"></div>
+            <hr class="hline">
+            <div class="col-md-4 footer-content-padding">
+                <div class="footer-content-brand">
+                    <h1><span>Top</span> Guides</h1>
+                    <p><span style="text-decoration: underline;"><span style="color: #ffffff; text-decoration: underline;"><a href="http://store.curiousinventor.com/guides/kicad"><span style="color: #ffffff; text-decoration: underline;">KiCad - free Circuit Board Design Software (CAD)</span></a></span></span></p>
+<p><span style="text-decoration: underline;"><span style="color: #ffffff; text-decoration: underline;"><a href="http://store.curiousinventor.com/guides/Surface_Mount_Soldering"><span style="color: #ffffff; text-decoration: underline;">Surface Mount Soldering</span></a></span></span></p>
+<p><span style="text-decoration: underline;"><span style="color: #ffffff; text-decoration: underline;"><a href="http://store.curiousinventor.com/guides/How_to_Solder"><span style="color: #ffffff; text-decoration: underline;">How to Solder</span></a></span></span></p>
+<p><span style="text-decoration: underline;"><span style="color: #ffffff; text-decoration: underline;"><a href="http://store.curiousinventor.com/guides/metal_working"><span style="color: #ffffff; text-decoration: underline;">Metal Working</span></a></span></span></p>
+<p><span style="text-decoration: underline;"><span style="color: #ffffff; text-decoration: underline;"><a href="http://store.curiousinventor.com/guides/Metal_Working/Screws"><span style="color: #ffffff; text-decoration: underline;">All about Screws</span></a></span></span></p>                </div>
+            </div>
+        </div>
+        <div class="container">
+            <hr class="hr-margin">
+            <div class="col-md-12 text-center footer-last">
+                <p><span style="color: #0000ee;"><span style="text-decoration: underline;">&nbsp;</span></span><a href="http://store.curiousinventor.com/contacts">Contact Us</a></p>            </div>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+                
+
+<!-- Beetailer code --> 
+<script type="text/javascript"> var beetailer_storeview = '1';</script>
+<script type="text/javascript" src="./Interfacing a PS2 (PlayStation 2) Controller - CuriousInventor Tutorials_files/beetailer.js.download"></script>
+<!-- EO Beetailer code --> 
+    </div>
+</div>
+
+
+
+<div class="magic-hidden-wrapper"></div></body></html>

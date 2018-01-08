@@ -1,0 +1,523 @@
+/**
+ * Created by Chamal on 9/17/14.
+ */
+
+var $j = jQuery.noConflict(true);
+
+
+
+$j( document ).ready(function() {
+
+    $j('.product-footer-slider').slick({
+        dots: false,
+        infinite: true,
+        autoplay: false,
+        speed: 1000,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplaySpeed: 2000,
+        pauseOnHover: true,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                    infinite: true,
+                    dots: false
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+    });
+
+    // for product image gallery slider
+
+    $j('.slider-for').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: true,
+        fade: true,
+        asNavFor: '.slider-nav'
+    });
+    $j('.slider-nav').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        asNavFor: '.slider-for',
+        dots: true,
+        centerMode: true,
+        focusOnSelect: true
+    });
+
+
+
+
+});
+
+$j(window).on("load", function () {
+    
+//    var width=$j( window ).width();
+
+    
+            $j(".navbar-toggle").on('click',function(){
+                var width=$j( window ).width();
+                if(width<768)
+                $j(".mgmenu_container").slideToggle( "slow" );
+            });
+
+            $j(".prod-click").on('click',function(){
+                var width=$j( window ).width();
+                if(width<768)
+                $j(".mgmenu_tabs").slideToggle( "fast" );
+            });
+
+            $j(".spe-click").on('click',function(){
+                var width=$j( window ).width();
+                if(width<768)
+                $j(".spe-ul").slideToggle( "fast" );
+            });
+
+            $j(".img-sub1").on('click',function(){
+                var width=$j( window ).width();
+                if(width<768)
+                var uid=$j(this).attr('uid');
+                $j("#sub1"+uid).slideToggle( "fast" );
+            });
+
+            $j(".img-sub2").on('click',function(){
+                var width=$j( window ).width();
+                if(width<768)
+                var uid=$j(this).attr('uid');
+                $j("#sub2"+uid).slideToggle( "fast" );
+            });
+
+            $j(".img-sub3").on('click',function(){
+                var width=$j( window ).width();
+                if(width<768)
+                var uid=$j(this).attr('uid');
+                $j("#sub3"+uid).slideToggle( "fast" );
+            });
+
+            $j(".img-sub4").on('click',function(){
+                var width=$j( window ).width();
+                if(width<768)
+                var uid=$j(this).attr('uid');
+                $j("#sub4"+uid).slideToggle( "fast" );
+            });
+
+            $j(".subt").on('click',function(){
+                var width=$j( window ).width();
+                if(width<768)
+                var uid=$j(this).attr('uid');
+                $j("#subt"+uid).slideToggle( "fast" );
+            });
+    
+    
+})
+
+
+$j( window ).resize(function() {
+
+    var width = $j( window ).width();
+    
+    if(width>768)
+    {
+        $j('#mgmenu1').removeAttr('style');
+        $j('.spe-ul').removeAttr('style');
+        $j('.dropdown_fullwidth ').removeAttr('style');
+        $j('.sub1 ').removeAttr('style');
+        
+        $j('.item-container').css("height",$j(".dropdown_fullwidth").height());
+    }else
+    {
+        $j('.item-container').css("height","auto");
+    }
+    
+});
+
+
+
+
+$j(document).ready(function(){
+    $j("#up").on('click',function(){
+        $j("#qty").val(parseInt($j("#qty").val())+1);
+    });
+
+    $j("#down").on('click',function(){
+        if(parseInt($j("#incdec input").val()) >1){
+            $j("#qty").val(parseInt($j("#qty").val())-1);
+        }
+    });
+
+    $j('.blog-wrapper img').each(function () {
+        var img_width = $j(this).width();
+        if (img_width > 730) {
+            $j(this).css('width','100%');
+            $j(this).css('height','auto');
+        }
+    });
+});
+
+
+
+$j('.product-zoom').slick({
+    dots: false,
+    infinite: true,
+    speed: 300,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    nextArrow:'<div class="sn"></div>',
+    prevArrow:'<div class="sp"></div>',
+    vertical:true,
+    responsive: [
+        {
+            breakpoint: 755,
+            settings: {
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                vertical:false
+            }
+        }
+    ]
+});
+
+
+$j(document).ready(function () {
+    $j('#horizontalTab').responsiveTabs({
+        rotate: false,
+        startCollapsed: 'accordion',
+        collapsible: 'accordion',
+        setHash: false,
+
+        activate: function(e, tab) {
+            $j('.info').html('Tab <strong>' + tab.id + '</strong> activated!');
+        },
+        activateState: function(e, state) {
+            //console.log(state);
+            $j('.info').html('Switched from <strong>' + state.oldState + '</strong> state to <strong>' + state.newState + '</strong> state!');
+        }
+    });
+
+    $j('#start-rotation').on('click', function() {
+        $j('#horizontalTab').responsiveTabs('startRotation', 1000);
+    });
+    $j('#stop-rotation').on('click', function() {
+        $j('#horizontalTab').responsiveTabs('stopRotation');
+    });
+    $j('#start-rotation').on('click', function() {
+        $j('#horizontalTab').responsiveTabs('active');
+    });
+    $j('.select-tab').on('click', function() {
+        $j('#horizontalTab').responsiveTabs('activate', $j(this).val());
+    });
+
+});
+
+
+$j(function() {
+    $j('#scroll').click(function() {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+            var target = $j(this.hash);
+            target = target.length ? target : $j('[name=' + this.hash.slice(1) +']');
+            if (target.length) {
+                $j('html,body').animate({
+                    scrollTop: target.offset().top
+                }, 1000);
+                return false;
+            }
+        }
+    });
+});
+
+
+// By Chris Coyier & tweaked by Mathias Bynens
+
+$j(function() {
+
+    // Find all YouTube videos
+    var $allVideos = $j("iframe[src^='//www.youtube.com']"),
+
+    // The element that is fluid width
+        $fluidEl = $j("body");
+
+    // Figure out and save aspect ratio for each video
+    $allVideos.each(function() {
+
+        $j(this)
+            .data('aspectRatio', this.height / this.width)
+
+            // and remove the hard coded width/height
+
+            .removeAttr('width');
+
+    });
+
+    // When the window is resized
+    // (You'll probably want to debounce this)
+    $j(window).resize(function() {
+
+        var newWidth = '100%';
+
+        // Resize all videos according to their own aspect ratio
+        $allVideos.each(function() {
+
+            var $el = $j(this);
+            $el
+                .width(newWidth)
+
+        });
+
+        // Kick off one resize to fix all videos on page load
+    }).resize();
+
+});
+
+
+//for cart page qty increments
+
+$j(document).ready(function(){
+    $j(".qtyup").on('click',function(){
+        var uid=$j(this).attr("cid");
+        $j("#qty"+uid).val(parseInt($j("#qty"+uid).val())+1);
+    });
+
+    $j(".qtydown").on('click',function(){
+        var doid=$j(this).attr("cid");
+        if(parseInt($j("#qty"+doid).val()) >1){
+            $j("#qty"+doid).val(parseInt($j("#qty"+doid).val())-1);
+        }
+
+    });
+
+});
+
+//Adjusting the hover content hight
+function adjustHoverFrame()
+{
+    hight = $j('.image-container').height()+2;
+    $j('.hover-content').css("height",hight);
+    $j('.hover-content').css("margin-top",-hight);
+}
+
+//Executing functions & scripts
+
+//Calling adjustment junctions to load event
+$j(window).load(function() {
+    adjustHoverFrame();
+});
+
+//clalling adjusment functions to reize event
+$j(document).ready(function()
+{
+    $j(window).resize(function() {
+        setTimeout(function() {
+            adjustHoverFrame();
+        }, 150);
+        adjustHoverFrame();
+    });
+});
+
+
+
+////////////////////////////////////////////////////////////////////////////
+
+
+
+// ==============================================
+// Search
+// ==============================================
+
+Varien.searchForm.prototype.initialize = function (form, field, emptyText) {
+    this.form = $(form);
+    this.field = $(field);
+    this.emptyText = emptyText;
+
+    this.validator = new Validation(this.form);
+
+    Event.observe(this.form, 'submit', this.submit.bind(this));
+    Event.observe(this.field, 'focus', this.focus.bind(this));
+    Event.observe(this.field, 'blur', this.blur.bind(this));
+    this.blur();
+}
+
+Varien.searchForm.prototype.submit = function (event) {
+    if (!this.validator || !this.validator.validate()) {
+        Event.stop(event);
+        return false;
+    }
+    return true;
+}
+
+// ==============================================
+// jQuery Init
+// ==============================================
+
+// Avoid PrototypeJS conflicts, assign jQuery to $j instead of $
+//var $j = jQuery.noConflict();
+
+// Use $j(document).ready() because Magento executes Prototype inline
+$j(document).ready(function () {
+    // =============================================
+    // Skip Links
+    // =============================================
+
+    var skipContents = $j('.skip-content');
+    var skipLinks = $j('.skip-link');
+
+    skipLinks.on('click', function (e) {
+        e.preventDefault();
+
+        $j( ".top-cart" ).slideToggle( "slow" );
+    });
+
+    $j('#header-cart').on('click', '.skip-link-close', function(e) {
+        $j( ".top-cart" ).slideToggle( "slow" );
+        e.preventDefault();
+    });
+
+
+    // ==============================================
+    // UI Pattern - ToggleSingle
+    // ==============================================
+
+    /*jQuery.fn.toggleSingle = function (options) {
+
+        // passing destruct: true allows
+        var settings = $j.extend({
+            destruct: false
+        }, options);
+
+        return this.each(function () {
+            if (!settings.destruct) {
+                $j(this).on('click', function () {
+                    $j(this)
+                        .toggleClass('active')
+                        .next()
+                        .toggleClass('no-display');
+                });
+                // Hide the content
+                $j(this).next().addClass('no-display');
+            } else {
+                // Remove event handler so that the toggle link can no longer be used
+                $j(this).off('click');
+                // Remove all classes that were added by this plugin
+                $j(this)
+                    .removeClass('active')
+                    .next()
+                    .removeClass('no-display');
+            }
+
+        });
+    }*/
+
+    // ==============================================
+    // Checkout Cart - events
+    // ==============================================
+
+    if ($j('body.checkout-cart-index').length) {
+        $j('input[name^="cart"]').focus(function () {
+            $j(this).siblings('button').fadeIn();
+        });
+    }
+
+});
+
+
+//for homepage social image hover
+
+function hover(element) {
+    element.setAttribute('src', 'http://www.ledcontrols.co.uk/media/wysiwyg/pinterest-hover.png');
+}
+function unhover(element) {
+    element.setAttribute('src', 'http://www.ledcontrols.co.uk/media/wysiwyg/pinterest.png');
+}
+
+function hoverfb(element) {
+    element.setAttribute('src', 'http://www.ledcontrols.co.uk/media/wysiwyg/facebook-hover.png');
+}
+function unhoverfb(element) {
+    element.setAttribute('src', 'http://www.ledcontrols.co.uk/media/wysiwyg/facebook.png');
+}
+
+function hoverlin(element) {
+    element.setAttribute('src', 'http://www.ledcontrols.co.uk/media/wysiwyg/linkedin-hover.png');
+}
+function unhoverlin(element) {
+    element.setAttribute('src', 'http://www.ledcontrols.co.uk/media/wysiwyg/linkedin.png');
+}
+
+function hovertw(element) {
+    element.setAttribute('src', 'http://www.ledcontrols.co.uk/media/wysiwyg/twitter-hover.png');
+}
+function unhovertw(element) {
+    element.setAttribute('src', 'http://www.ledcontrols.co.uk/media/wysiwyg/twitter.png');
+}
+
+
+
+$j('#fb').hover(
+    function(){
+        $j(this).attr('src','http://www.ledcontrols.co.uk/media/wysiwyg/facebook-hover.png')
+    },
+    function(){
+        $j(this).attr('src','http://www.ledcontrols.co.uk/media/wysiwyg/facebook.png')
+    }
+)
+
+$j('#tw').hover(
+    function(){
+        $j(this).attr('src','http://www.ledcontrols.co.uk/media/wysiwyg/twitter-hover.png')
+    },
+    function(){
+        $j(this).attr('src','http://www.ledcontrols.co.uk/media/wysiwyg/twitter.png')
+    }
+)
+
+$j('#lin').hover(
+    function(){
+        $j(this).attr('src','http://www.ledcontrols.co.uk/media/wysiwyg/linkedin-hover.png')
+    },
+    function(){
+        $j(this).attr('src','http://www.ledcontrols.co.uk/media/wysiwyg/linkedin.png')
+    }
+)
+
+
+//for homepage slider image center
+
+function centerSliderImage(){
+    var imageWidth = 1850;
+    var windowWidth = $j( window ).width();
+    var imageOverflow = imageWidth - windowWidth;
+    var margine = -imageOverflow/2;
+
+    $j( ".carousel-inner img" ).css('margin-left',margine);
+
+
+}
+
+//Calling image center functions to load event
+$j(window).load(function() {
+    centerSliderImage();
+});
+
+//clalling image center functions to resize event
+$j(document).ready(function()
+{
+    $j(window).resize(function() {
+        centerSliderImage();
+    });
+});
