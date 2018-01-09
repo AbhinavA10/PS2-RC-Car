@@ -1,11 +1,12 @@
 /*==============================================================================
     Project: PS2-RC-Car          By: Abhi Agrahari
-    Version: 1.0 				         Date: Jan 5th, 2018
+    Version: 1.2 				 Date: Jan 5th, 2018
     Target: RCCar1.0             Processor: PIC16F1459
 
     This is a project that controls an RC Car, from a wireless PS2 controller.
 
-    The current step/project purpose is being able to send data back and forth on the PS2 controller
+    The current step/project purpose is being able to send data back and forth
+    on the PS2 controller
 ==============================================================================*/
 
 #include	"xc.h"				// XC general include file
@@ -21,14 +22,16 @@
 
 /*TODOLIST:
  * comments
- * verify command sequencing with CuriousInventor page
+ * check total time (time between polls should be 5-10ms?)
+ * make array for databytes instead of separate variables
+ * write code for pressure values, and motor mapping
  */
 
 /*==============================================================================
-    Declarations.
+ DECLARATIONS
 ==============================================================================*/
 //-------- VARIABLES ---------------
-unsigned char COMMANDVal = 0;
+unsigned char MOTORCMDVal = 0;
 unsigned char DATAVal = 0;
 unsigned char DATAByte2 = 0;
 unsigned char DATAByte4 = 0;
@@ -40,6 +43,7 @@ unsigned char DATAByte9 = 0;
 unsigned char servoPos = 90;
 bool vibrateMotor = false;
 bool analogMode = false;
+bool analogPressureMode = false;
 
 //-------- BUTTON BITS ---------------
 #define BUTTON_SELECT       0b00000001
@@ -50,6 +54,7 @@ bool analogMode = false;
 #define BUTTON_RIGHT        0b00100000
 #define BUTTON_DOWN         0b01000000
 #define BUTTON_LEFT         0b10000000
+//Above buttons are in data byte4, below are in data byte5
 #define BUTTON_L2           0b00000001
 #define BUTTON_R2           0b00000010
 #define BUTTON_L1           0b00000100
@@ -59,31 +64,10 @@ bool analogMode = false;
 #define BUTTON_X            0b01000000
 #define BUTTON_SQUARE       0b10000000
 
-//-------- COMMANDS ---------------
-#define CMD_POLL              0x42
-#define CMD_CONFIG            0x43
-#define CMD_TURNONANALOGMODE  0x44
-#define CMD_MOTORMAP          0x4D
-#define CMD_TURNONPRESURES    0x4F
-
-/*==============================================================================
- ADCONVERT
-==============================================================================*/
-unsigned char adConvert(unsigned char chan) {
-    ADON = 1;
-    ADCON0 = (ADCON0 & 0b10000011);
-    ADCON0 = (ADCON0 | chan);
-    __delay_us(2);
-
-    GO = 1;
-    while (GO);
-
-    ADON = 0;
-    return (ADRESH);
-}
-
 /*==============================================================================
  TURN SERVO
+    Function that takes a position for the servo as the input. It will send a
+    pulse such that the timing, matches the servo position, through PWMing.
 ==============================================================================*/
 void turnServo(unsigned char value) {
     SERVO = 1;
@@ -95,7 +79,11 @@ void turnServo(unsigned char value) {
 }
 
 /*==============================================================================
-    SEND CMD RECEIVE DATA
+ SEND CMD RECEIVE DATA
+    Function to simultaneously send a command byte when the clock goes low,
+    and recieve the data byte, when the clock goes low. This is done bit by bit.
+    The clock runs at ~250kHz.
+    Input is the command to be sent, and Returns the value of the data received.
 ==============================================================================*/
 unsigned char SendCMD_ReceiveDATA(unsigned char cmd) {
     unsigned char dat = 0;
@@ -122,13 +110,14 @@ unsigned char SendCMD_ReceiveDATA(unsigned char cmd) {
 }
 
 /*==============================================================================
-    DIGITAL POLL
+ DIGITAL POLL
+    Function to
 ==============================================================================*/
 void DigitalPoll() {
     ATTNLINE = 0;
     __delay_us(16);
     DATAVal = SendCMD_ReceiveDATA(0x01);
-    DATAVal = SendCMD_ReceiveDATA(CMD_POLL);
+    DATAVal = SendCMD_ReceiveDATA(0x42);
     DATAVal = SendCMD_ReceiveDATA(0x00);
     DATAVal = SendCMD_ReceiveDATA(0x00);
     DATAVal = SendCMD_ReceiveDATA(0x00);
@@ -137,13 +126,36 @@ void DigitalPoll() {
 }
 
 /*==============================================================================
-  ENTER CONFIG
+ ANALOG POLL
+    Function to
+==============================================================================*/
+void AnalogPoll() {
+    ATTNLINE = 0;
+    __delay_us(16);
+    DATAVal = SendCMD_ReceiveDATA(0x01);
+    DATAVal = SendCMD_ReceiveDATA(0x42);
+    DATAVal = SendCMD_ReceiveDATA(0x00);
+    MOTORCMDVal = (vibrateMotor) ? 0xFF : 0x00;
+    // above: if vibrate motor is set, command is set to switch on (0xFF)
+    DATAByte4 = SendCMD_ReceiveDATA(MOTORCMDVal);
+    DATAByte5 = SendCMD_ReceiveDATA(MOTORCMDVal);
+    DATAByte6 = SendCMD_ReceiveDATA(0x00);
+    DATAByte7 = SendCMD_ReceiveDATA(0x00);
+    DATAByte8 = SendCMD_ReceiveDATA(0x00);
+    DATAByte9 = SendCMD_ReceiveDATA(0x00);
+    ATTNLINE = 1;
+    __delay_us(16);
+}
+
+/*==============================================================================
+ ENTER CONFIG
+    Function to
 ==============================================================================*/
 void EnterConfig() {
     ATTNLINE = 0;
     __delay_us(16);
     DATAVal = SendCMD_ReceiveDATA(0x01);
-    DATAVal = SendCMD_ReceiveDATA(CMD_CONFIG);
+    DATAVal = SendCMD_ReceiveDATA(0x43);
     DATAVal = SendCMD_ReceiveDATA(0x00);
     DATAVal = SendCMD_ReceiveDATA(0x01); // shows entering config
     DATAVal = SendCMD_ReceiveDATA(0x00);
@@ -152,13 +164,14 @@ void EnterConfig() {
 }
 
 /*==============================================================================
-    TURN ON ANALOG MODE
+ TURN ON ANALOG MODE
+    Function to
 ==============================================================================*/
 void TurnOnAnalogMode() {
     ATTNLINE = 0;
     __delay_us(16);
     DATAVal = SendCMD_ReceiveDATA(0x01);
-    DATAVal = SendCMD_ReceiveDATA(CMD_TURNONANALOGMODE);
+    DATAVal = SendCMD_ReceiveDATA(0x44);
     DATAVal = SendCMD_ReceiveDATA(0x00);
     DATAVal = SendCMD_ReceiveDATA(0x01);
     DATAVal = SendCMD_ReceiveDATA(0x03);
@@ -171,56 +184,14 @@ void TurnOnAnalogMode() {
 }
 
 /*==============================================================================
-  EXIT CONFIG
-==============================================================================*/
-void Exitconfig() {
-    ATTNLINE = 0;
-    __delay_us(16);
-    DATAVal = SendCMD_ReceiveDATA(0x01);
-    DATAVal = SendCMD_ReceiveDATA(CMD_CONFIG);
-    DATAVal = SendCMD_ReceiveDATA(0x00);
-    DATAVal = SendCMD_ReceiveDATA(0x00); // shows exiting config
-    DATAVal = SendCMD_ReceiveDATA(0x5A);
-    DATAVal = SendCMD_ReceiveDATA(0x5A);
-    DATAVal = SendCMD_ReceiveDATA(0x5A);
-    DATAVal = SendCMD_ReceiveDATA(0x5A);
-    DATAVal = SendCMD_ReceiveDATA(0x5A);
-    ATTNLINE = 1;
-    __delay_us(16);
-}
-
-/*==============================================================================
-  ANALOG POLL
-==============================================================================*/
-void AnalogPoll() {
-    ATTNLINE = 0;
-    __delay_us(16);
-    DATAVal = SendCMD_ReceiveDATA(0x01);
-    DATAVal = SendCMD_ReceiveDATA(CMD_POLL);
-    DATAVal = SendCMD_ReceiveDATA(0x00);
-    COMMANDVal = (vibrateMotor) ? 0xFF : 0x00;
-    // above: if vibrate motor is set, command is set to switch on (0xFF)
-    DATAByte4 = SendCMD_ReceiveDATA(COMMANDVal);
-    DATAByte5 = SendCMD_ReceiveDATA(COMMANDVal);
-    DATAByte6 = SendCMD_ReceiveDATA(0x00);
-    DATAByte7 = SendCMD_ReceiveDATA(0x00);
-    DATAByte8 = SendCMD_ReceiveDATA(0x00);
-    DATAByte9 = SendCMD_ReceiveDATA(0x00);
-    ATTNLINE = 1;
-    __delay_us(16);
-}
-
-/*==============================================================================
-  MAP VIBRATION MOTORS
-    Function to switch from digital to analog model
-    Poll 3 times for initiation and refresh, enter config mode, switch and lock to
-    analog, setup vibration motor to be toggled, and exit config mode
+ MAP VIBRATION MOTORS
+    Function to
 ==============================================================================*/
 void MapVibrationMotors() {
     ATTNLINE = 0;
     __delay_us(16);
     DATAVal = SendCMD_ReceiveDATA(0x01);
-    DATAVal = SendCMD_ReceiveDATA(CMD_MOTORMAP);
+    DATAVal = SendCMD_ReceiveDATA(0x4D);
     DATAVal = SendCMD_ReceiveDATA(0x00);
     DATAVal = SendCMD_ReceiveDATA(0x00); // maps this byte to control the small motor.
     DATAVal = SendCMD_ReceiveDATA(0x01); // maps this byte to control the large motor.
@@ -233,7 +204,47 @@ void MapVibrationMotors() {
 }
 
 /*==============================================================================
-  PS2 INIT
+ TURN ON PRESSURE VALUE RETURN
+    Function to
+==============================================================================*/
+void TurnonPressureValues() {
+    ATTNLINE = 0;
+    __delay_us(16);
+    DATAVal = SendCMD_ReceiveDATA(0x01);
+    DATAVal = SendCMD_ReceiveDATA(0x43);
+    DATAVal = SendCMD_ReceiveDATA(0x00);
+    DATAVal = SendCMD_ReceiveDATA(0x00); // shows exiting config
+    DATAVal = SendCMD_ReceiveDATA(0x5A);
+    DATAVal = SendCMD_ReceiveDATA(0x5A);
+    DATAVal = SendCMD_ReceiveDATA(0x5A);
+    DATAVal = SendCMD_ReceiveDATA(0x5A);
+    DATAVal = SendCMD_ReceiveDATA(0x5A);
+    ATTNLINE = 1;
+    __delay_us(16);
+}
+
+/*==============================================================================
+ EXIT CONFIG
+    Function to
+==============================================================================*/
+void Exitconfig() {
+    ATTNLINE = 0;
+    __delay_us(16);
+    DATAVal = SendCMD_ReceiveDATA(0x01);
+    DATAVal = SendCMD_ReceiveDATA(0x43);
+    DATAVal = SendCMD_ReceiveDATA(0x00);
+    DATAVal = SendCMD_ReceiveDATA(0x00); // shows exiting config
+    DATAVal = SendCMD_ReceiveDATA(0x5A);
+    DATAVal = SendCMD_ReceiveDATA(0x5A);
+    DATAVal = SendCMD_ReceiveDATA(0x5A);
+    DATAVal = SendCMD_ReceiveDATA(0x5A);
+    DATAVal = SendCMD_ReceiveDATA(0x5A);
+    ATTNLINE = 1;
+    __delay_us(16);
+}
+
+/*==============================================================================
+ PS2 INIT
     Function to switch from digital to analog model
     Poll 3 times for initiation and refresh, enter config mode, switch and lock to
     analog, setup vibration motor to be toggled, and exit config mode
@@ -245,25 +256,30 @@ void PS2_configToAnalog() {
     EnterConfig();
     TurnOnAnalogMode();
     MapVibrationMotors();
+    if (analogPressureMode) {
+        TurnonPressureValues();
+    }
     Exitconfig();
     analogMode = true;
 }
 
 /*==============================================================================
-    IS PRESSED
-Using masking, and bitwise operations, we can see if a button is pressed
-Since data line is normally high, and goes low when a button is pressed, we
-AND it and then check against 0.
+ IS PRESSED
+    Using masking, and bitwise operations, we can see if a button is pressed
+    Since data line is normally high, and goes low when a button is pressed, we
+    AND it and then check against 0.
 
-If the AND's result is zero, that means the button was pressed (since data line goes low when pressed)
-If the AND's result is not zero (bit was set), that means the button is not pressed
+    If the AND's result is zero, that means the button was pressed
+    (since data line goes low when pressed). If the AND's result is not zero
+    (bit was set), that means the button is not pressed
 ==============================================================================*/
 bool isPressed(unsigned char dat, unsigned char key) {
     return ((dat & key) == 0);
 }
 
 /*==============================================================================
-    MAIN program loop. The main() function is called first by the compiler.
+ MAIN
+    The main() function is called first by the compiler.
 ==============================================================================*/
 int main(void) {
     initOsc(); // Initialize oscillator
@@ -278,15 +294,18 @@ int main(void) {
             } else {
                 vibrateMotor = false;
             }
+            if (analogPressureMode) {
+                // set motor command value to pressure value of button
+            }
         } else {
             DigitalPoll();
         }
         if (isPressed(DATAByte5, BUTTON_TRIANGLE)) {
-            LED2 = 1;
-            LED3 = 0;
+            LED2 = 1; // switch on headlights
+            LED3 = 1;
         } else {
             LED2 = 0;
-            LED3 = 1;
+            LED3 = 0;
         }
         if (S1 == 0) // Enter the bootloader if S1 is pressed.
         {

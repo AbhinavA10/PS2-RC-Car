@@ -25,7 +25,7 @@ Remote has 3 modes of operation
 - Analog: 9Byte packets
 - Analog pressure: 21Byte packets
 
-All transmissions are 8bit serial LSB first. All timing synchronous to the falling edge of the clock. (both incoming and outgoing signals change on a high to low transition of clock) Commands are sent on the falling edge, data is read on the rising edge. The play station sends a byte at the same time as it receives one
+All transmissions are 8bit serial LSB first. All timing synchronous to the falling edge of the clock. (both incoming and outgoing signals change on a high to low transition of clock) Commands are sent on the falling edge, data is read on the rising edge. The play station sends a byte at the same time as it receives one.
 
 When first plugged in,
 
@@ -34,6 +34,8 @@ When first plugged in,
 | ------------- | ------------- | ------------- | ------------- |------------- |------------- |
 | **COMMAND**  | `0x01` | ` 0x42`|`0x00` |`0x00` |`0x00` |
 | **DATA**   |  `0xFF` | ` 0x41`|`0x5A` |`0xFF` |`0xFF` |
+
+The first three bytes are known as a header. This is so the PS2 controller can send the data, after it receives the command.
 
 BYTE 1: CMD's is always `0x01`. Data is always `0xFF`
 
@@ -70,7 +72,7 @@ DATA: value of Analog Left X Axis `(Up:Down, 0:255)`
 
 Ex. for 6th to 9th Byte: if data is 0x80 = 0b1000000 = 128, the joystick is at the middle
 
-#### Digital BUTTON MAPPING:
+#### Digital Button Mapping:
 | Button   | Select | L3(Stick) | R3(Stick) | Start | Up |Right |Down |Left |L2 |R2 |L1 |R1 |Triangle |Circle |X |Square |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 |**byte.bit**|	4.0	|4.1|	4.2|	4.3|	4.4	|4.5	|4.6	|4.7	|5.0|	5.1|	5.2|	5.3|	5.4|	5.5|	5.6|	5.7|
@@ -78,49 +80,59 @@ Ex. for 6th to 9th Byte: if data is 0x80 = 0b1000000 = 128, the joystick is at t
 
 EX. If 4th Byte Data is `0x11 = 0b11110110`. The 0th and 4th bits are low. The rest is high. This means Select and Start are pressed simultaneously
 
+#### Analog/Pressure Button Mapping:
+| Button   | Right | Left| Up| Down| Triangle |Circle |X |Square |L1 |R1 |L2 |R2 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|**Byte**|	10	|11|	12|	13|	14	|15	|16	|17	|18|	19|	20|	21|
+
 #### Main Commands, sent by CMD
-Data is not important in config mode and related CMDs. Focus is on the commands
+Data is not important in config mode and related CMDs. Focus is on the commands.
 
-These are sent in Byte2
+These main commands are sent in Byte2.
 
-##### Main Polling Command: `0x42`
+##### Polling: `0x42`
 - 5byte packet for digital, 9byte packet for analog
 - Motors can also be switched on after running polling command in bytes4/5 (once configured to be switchable in config mode)
 - This is the most used command.
 
 ##### Enter Config Mode: `0x43`
 - This packet is used to get in to configuration mode before setting up the controller to analogue mode or setup for the vibration motor.
-- BYTE2 = `0x43`
 - BYTE4 = `0x01`
 - BYTE5 = `0x00`
+- Config modes are always 9byte packets
 
 ##### Mode Selection: `0x44`
 - This packet used to select the controller mode, after entering config mode
-- BYTE2 = `0x44`
 - BYTE4 = `0x01`: analog= 0x01, digital = 0x00
 - BYTE5 = `0x03` to lock the controller into the mode sent in byte 4
 
-##### Mode Selection: `0x4D`
+##### Motor Mapping: `0x4D`
 - This packet is used to setup the vibration motors function, after entering config mode
 - `0x00` maps the corresponding byte in 0x42 to control the small motor.
 - `0x01` maps the corresponding byte in 0x42 to control the large motor.
 - `0xFF` disables, and is the default value when the controller is first connected
-- BYTE2 = `0x4D`
 - BYTE4 = `0x00`
 - BYTE5 = `0x01`
 
+##### Pressure Values: `0x4F`
+- This packet used to select the controller mode, after entering config mode
+- BYTE4 = `0xFF`
+- BYTE5 = `0xFF`
+- BYTE6 = `0x03`
+
 ##### Exit Config Mode: `0x43`
-- BYTE2 = `0x43`
 - BYTE4 = `0x00`
 - BYTES5->9 = `0x5A`
+- Config modes are always 9byte packets
 
-#### Recommended sequence to switch from digital to analog modes
+#### Recommended sequence to switch from digital to analog mode
 1. Digital Poll (three times for initiation and refresh)
 2. Enter configuration mode
 3. Switch to analog mode and lock the analog mode
 4. Setup vibration motor
-5. Exit configuration mode
-6. Analog Poll (loop this forever)
+5. Setup return of pressure values (optional)
+6. Exit configuration mode
+7. Analog Poll (looped forever)
 
 ### Pin Control
 #### CLOCK
@@ -128,18 +140,18 @@ These are sent in Byte2
 - Used to keep units in sync. Has to run at 250kHz
 - cleared to low when sending Command, set high when receiving Data
 - Since Command and Data are sent and received alternately within each bit, the clock is set to high and low alternately every bit.
-- time interval time for each high and low is 2µs, and the interval of every byte sent is 16µs.
+- time interval time for each high and low combined is 4µs, and the interval of every byte sent is 16µs.
 
-#### DATA (SDI)
+#### DATA (IN)
 - Signal from Controller to PSX. (received)
 - This signal is an 8 bit serial transmission synchronous to the falling edge of clock
 - can ignore first three bytes, if we want to assume it's correct.
 
-#### COMMAND (SDO)
+#### COMMAND (OUT)
 - Signal from PSX to Controller. (Sent)
 - 8 bit serial transmission on the falling edge of clock.
 
-#### ATT (SS)
+#### ATTENTION
 - ATT is used to get the *attention* of the controller.
 - This signal goes low for the duration of a transmission.
 - i.e. a high again would represent the sending of packet has ended.
@@ -147,8 +159,8 @@ These are sent in Byte2
 ## Sources
 
 - [Gamesx PS2 Controller Protocol](https://www.gamesx.com/controldata/psxcont/psxcont.htm)
-- [CuriousInventor's Protocol Explanation](linktointernalhtmlfile) Note: this is not my website, I had saved the old version of their site, and am using it as such
-- [Playstation Servo Controller Interface](linktointernalpdf)
-- [PIC16F1459 Datasheet](linktointernalpdf)
+- [CuriousInventor's Protocol Explanation](http://htmlpreview.github.io/?https://github.com/AbhinavA10/PS2-RC-Car/blob/master/docs/Sources/Interfacing%20a%20PS2%20(PlayStation%202)%20Controller%20-%20CuriousInventor%20Tutorials.html) Note: this is not my website, I had saved the old version of their site, and am using it as such
+- [Playstation Servo Controller Interface](docs/Sources/playstation-servo-controller-interface.pdf)
+- [PIC16F1459 Datasheet](docs/Sources/PIC16F1459 Data Sheet.pdf)
 - [Checking if a bit is set, in a byte](https://www.gamedev.net/forums/topic/657315-checking-if-a-bit-is-set-in-a-byte/)
 - [Bit Field - Wikipedia](https://en.wikipedia.org/wiki/Bit_field)
