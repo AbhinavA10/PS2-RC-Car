@@ -11,12 +11,34 @@ The MSSP/SPI Module in the PIC16F1459, transfers the MSB first (p197 of the data
 ## Notes on PS2 Interface
 
 ### Vocabulary
-- Bit: well..
-- Byte: 8 bits
+- Bit: one binary value
 - Nibble: 4 bits
+- Byte: 8 bits
 - Packet: series of bytes
 - CMD: Command/command line
 - DATA: Data/Data line
+
+### Pin Control
+#### CLOCK
+- Signal from PSX to Controller.
+- Used to keep units in sync. Has to run at 250kHz
+- cleared to low when sending Command, set high when receiving Data
+- Since Command and Data are sent and received alternately within each bit, the clock is set to high and low alternately every bit.
+- time interval time for each high and low combined is 4µs, and the interval of every byte sent is 16µs.
+
+#### DATA (IN)
+- Signal from Controller to PSX. (received)
+- This signal is an 8 bit serial transmission synchronous to the falling edge of clock
+- can ignore first three bytes, if we want to assume it's correct.
+
+#### COMMAND (OUT)
+- Signal from PSX to Controller. (Sent)
+- 8 bit serial transmission on the falling edge of clock.
+
+#### ATTENTION
+- ATT is used to get the *attention* of the controller.
+- This signal goes low for the duration of a transmission.
+- i.e. a high again would represent the sending of packet has ended.
 
 ### Protocol  
 
@@ -40,13 +62,13 @@ The first three bytes are known as a header. This is so the PS2 controller can s
 BYTE 1: CMD's is always `0x01`. Data is always `0xFF`
 
 BYTE 2:  
-COMMAND
-Main command: can either poll controller or configure it.
+CMD:
+Send [Main commands](https://github.com/AbhinavA10/PS2-RC-Car#main-commands-sent-by-cmd) to either poll controller or configure it.
 
-DATA
-Device Mode: the high nibble (4) indicates the mode (`0x4` is digital, `0x7` is analog, `0xF` config), the lower nibble (1) is how many 16 bit words follow the header, although the playstation doesn't always wait for all these bytes
+DATA:
+Device Mode - the high nibble `(0x4)` indicates the mode (`0x4` is digital, `0x7` is analog, `0xF` config), the lower nibble `(0x1)` is how many 16 bit words follow the header
 
-BYTE 3: CMD's is always 0x00. Data is always 0x5A
+BYTE 3: CMD's is always `0x00`. Data is always `0x5A`
 
 BYTE 4:
 CMD: to configure to control either vibration motor (`0xFF` signifies "on")
@@ -70,7 +92,9 @@ BYTE 9:
 CMD: always `0x00`.
 DATA: value of Analog Left X Axis `(Up:Down, 0:255)`
 
-Ex. for 6th to 9th Byte: if data is 0x80 = 0b1000000 = 128, the joystick is at the middle
+Ex. for 6th to 9th Byte: if data is `0x80 = 0b1000000 = 128`, the joystick is at the middle
+
+BYTES 10-21 are button pressure values as described [here](https://github.com/AbhinavA10/PS2-RC-Car#analogpressure-button-mapping)
 
 #### Digital Button Mapping:
 | Button   | Select | L3(Stick) | R3(Stick) | Start | Up |Right |Down |Left |L2 |R2 |L1 |R1 |Triangle |Circle |X |Square |
@@ -133,28 +157,6 @@ These main commands are sent in Byte2.
 5. Setup return of pressure values (optional)
 6. Exit configuration mode
 7. Analog Poll (looped forever)
-
-### Pin Control
-#### CLOCK
-- Signal from PSX to Controller.
-- Used to keep units in sync. Has to run at 250kHz
-- cleared to low when sending Command, set high when receiving Data
-- Since Command and Data are sent and received alternately within each bit, the clock is set to high and low alternately every bit.
-- time interval time for each high and low combined is 4µs, and the interval of every byte sent is 16µs.
-
-#### DATA (IN)
-- Signal from Controller to PSX. (received)
-- This signal is an 8 bit serial transmission synchronous to the falling edge of clock
-- can ignore first three bytes, if we want to assume it's correct.
-
-#### COMMAND (OUT)
-- Signal from PSX to Controller. (Sent)
-- 8 bit serial transmission on the falling edge of clock.
-
-#### ATTENTION
-- ATT is used to get the *attention* of the controller.
-- This signal goes low for the duration of a transmission.
-- i.e. a high again would represent the sending of packet has ended.
 
 ## Sources
 

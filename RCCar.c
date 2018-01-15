@@ -30,13 +30,13 @@ void initPorts(void) {
     OPTION_REG = 0b01010111;    // Enable port pull-ups, TMR0 internal, div-256
 
     LATA = 0b00000000;          // Clear Port A latches before configuring PORTA
-    ANSELA = 0b00000000;        // Make all Port A pins digital, only RA4 can be changed
-    TRISA = 0b00001011;         //RA0, RA1 are used for USB, set Servo,ESC as output (bits4:5), S1 as input (bit3)
+    ANSELA = 0b00000000;        // Make all Port A pins digital, only RA4 can be changed to analog if needed
+    TRISA = 0b00001011;         //RA0, RA1 are pre-determined for USB, set Servo,ESC as output (bits4:5), S1 as input (bit3)
                                 //bits 0:3, 6:7 cant be changed
 
     LATB = 0b00000000;          // Clear Port B latches before configuring PORTB
     ANSELB = 0b00000000;        // Make all Port B pins digital, only RB4:5 can be set
-    TRISB = 0b10110000;         // bits 0:3 are default cleared, set clockline as out. dataline tiltswitches as inputs
+    TRISB = 0b10110000;         // bits 0:3 are default cleared, set clockline as out. dataline, tiltswitches as inputs
     WPUB = 0b10110000;          //enable pins defined as inputs above, to all have internal pull-ups
 
     LATC = 0b00000000;          // Clear Port C latches before configuring PORTC
