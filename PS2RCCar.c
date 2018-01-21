@@ -1,7 +1,7 @@
 /*==============================================================================
     Project: PS2-RC-Car          By: Abhi Agrahari
     Version: 1.2 				 Date: Jan 5th, 2018
-    Target: RCCar1.0             Processor: PIC16F1459
+    Target: RCCar 1.0            Processor: PIC16F1459
 
     This is a project that controls an RC Car, from a wireless PS2 controller.
 
@@ -294,6 +294,16 @@ bool isPressed(unsigned char dat, unsigned char key) {
 }
 
 /*==============================================================================
+ BEEP
+==============================================================================*/
+void beep(unsigned char period, unsigned char cycles) {
+    for (cycles; cycles != 0; cycles--) {
+        BEEPER = !BEEPER;
+        for (period; period != 0; period--);
+    }
+}
+
+/*==============================================================================
  MAIN
     The main() function is called first by the compiler.
 ==============================================================================*/
@@ -326,8 +336,10 @@ int main(void) {
         }
         if (S1 == 0) // Enter the bootloader
         {
-            asm("movlp 0x00");
-            asm("goto 0x001C");
+
+            beep(100, 500);
+            //            asm("movlp 0x00");
+            //            asm("goto 0x001C");
         }
     }
 }
