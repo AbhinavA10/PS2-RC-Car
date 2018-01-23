@@ -313,7 +313,7 @@ int main(void) {
     __delay_us(200);
     //PS2_configToAnalog(); //switch PS2 controller to analog mode
     while (1) {
-        if (analogMode) {
+        /*if (analogMode) {
             AnalogPoll();
             if (isPressed(arcDataValsByte[5], BUTTON_TRIANGLE)) {
                 MOTORCMDVal = 0xFF; // switch on in next poll
@@ -326,18 +326,22 @@ int main(void) {
             }
         } else {
             DigitalPoll();
-        }
-        if (isPressed(arcDataValsByte[5], BUTTON_TRIANGLE)) {
-            LED2 = 1; // switch on headlights
-            LED3 = 1;
+        }*/
+        DigitalPoll();
+        LED2 = 0;
+        LED3 = 0;
+        if (isPressed(arcDataValsByte[5], BUTTON_R2)) {
+            LED2 = 1;
+            beep(100, 500);
         } else {
-            LED2 = 0;
-            LED3 = 0;
+            LED3 = 1;
         }
         if (S1 == 0) // Enter the bootloader
-        {
+        { // was getting stuck here, meaning S1 was always 0?? Not sure how it was fixed, but it was
 
-            beep(100, 500);
+            beep(1000, 500);
+            LED2 = 1;
+            LED3 = 1;
             //            asm("movlp 0x00");
             //            asm("goto 0x001C");
         }
