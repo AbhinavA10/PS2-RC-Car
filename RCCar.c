@@ -37,7 +37,7 @@ void initPorts(void) {
     LATB = 0b00000000;          // Clear Port B latches before configuring PORTB
     ANSELB = 0b00000000;        // Make all Port B pins digital, only RB4:5 can be set
     TRISB = 0b10110000;         // bits 0:3 are default cleared, set clockline as out. dataline, tiltswitches as inputs
-    WPUB = 0b10110000;          //enable pins defined as inputs above, to all have internal pull-ups
+    WPUB = 0b10100000;          //enable pins defined as inputs above, to all have internal pull-ups
 
     LATC = 0b00000000;          // Clear Port C latches before configuring PORTC
     ANSELC = 0b00000000;        // Make all Port C pins digital
