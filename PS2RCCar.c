@@ -33,6 +33,7 @@ unsigned char MOTORCMDVal = 0;
 unsigned char arcDataValsByte[22]; // max is 21 bytes of data. I made 22 so we
 //humans can easily read/reference the code, arcDataValsByte[0] is unused
 unsigned char servoPos = 90;
+unsigned char duration = 0;
 bool analogMode = false;
 bool analogPressureMode = false;
 
@@ -303,6 +304,66 @@ void beep(unsigned char period, unsigned char cycles) {
     }
 }
 
+void Eb4() {
+    for (duration = 0; duration != 39; duration++) //Bb4 sixteenth note,or for .125s
+    {
+        BEEPER = 1;
+        __delay_us(1607);
+        BEEPER = 0;
+        __delay_us(1607);
+    }
+}
+
+void E4() {
+    for (duration = 0; duration != 41; duration++) //Bb4 sixteenth note,or for .125s
+    {
+        BEEPER = 1;
+        __delay_us(1517);
+        BEEPER = 0;
+        __delay_us(1517);
+    }
+}
+
+void F4() {
+    for (duration = 0; duration != 43; duration++) //Bb4 sixteenth note,or for .125s
+    {
+        BEEPER = 1;
+        __delay_us(1432);
+        BEEPER = 0;
+        __delay_us(1432);
+    }
+}
+
+void Fsharp() {
+    for (duration = 0; duration != 46; duration++) //Bb4 sixteenth note,or for .125s
+    {
+        BEEPER = 1;
+        __delay_us(1351);
+        BEEPER = 0;
+        __delay_us(1351);
+    }
+}
+
+void G5() {
+    for (duration = 0; duration != 98; duration++) //Bb4 sixteenth note,or for .125s
+    {
+        BEEPER = 1;
+        __delay_us(638);
+        BEEPER = 0;
+        __delay_us(638);
+    }
+}
+
+void pwmLED2(unsigned char brightness) {
+    LED2 = 0; // Turn LED10 off.
+
+    for (unsigned char counter = 255; counter != 0; counter--) // Count down from 255 to 0
+    {
+        if (counter == brightness) // Turn on the LED when counter = brightness
+            LED2 = 1;
+    }
+}
+
 /*==============================================================================
  MAIN
     The main() function is called first by the compiler.
@@ -311,9 +372,9 @@ int main(void) {
     initOsc(); // Initialize oscillator
     initPorts(); // Initialize I/O pins and peripherals
     __delay_us(200);
-    //PS2_configToAnalog(); //switch PS2 controller to analog mode
+    PS2_configToAnalog(); //switch PS2 controller to analog mode
     while (1) {
-        /*if (analogMode) {
+        if (analogMode) {
             AnalogPoll();
             if (isPressed(arcDataValsByte[5], BUTTON_TRIANGLE)) {
                 MOTORCMDVal = 0xFF; // switch on in next poll
@@ -326,24 +387,27 @@ int main(void) {
             }
         } else {
             DigitalPoll();
-        }*/
-        DigitalPoll();
-        LED2 = 0;
-        LED3 = 0;
-        if (isPressed(arcDataValsByte[5], BUTTON_R2)) {
-            LED2 = 1;
-            beep(100, 500);
-        } else {
-            LED3 = 1;
         }
+        if (isPressed(arcDataValsByte[5], BUTTON_TRIANGLE)) {
+            Eb4();
+        }
+        if (isPressed(arcDataValsByte[5], BUTTON_SQUARE)) {
+            E4();
+        }
+        if (isPressed(arcDataValsByte[5], BUTTON_CIRCLE)) {
+            F4();
+        }
+        if (isPressed(arcDataValsByte[5], BUTTON_X)) {
+            Fsharp();
+        }
+        pwmLED2(arcDataValsByte[9]);
         if (S1 == 0) // Enter the bootloader
         { // was getting stuck here, meaning S1 was always 0?? Not sure how it was fixed, but it was
 
-            beep(1000, 500);
-            LED2 = 1;
             LED3 = 1;
             //            asm("movlp 0x00");
             //            asm("goto 0x001C");
-        }
+        }else{
+        LED3 = 0;}
     }
 }
