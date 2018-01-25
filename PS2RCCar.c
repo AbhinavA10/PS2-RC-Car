@@ -318,7 +318,7 @@ bool isPressed(unsigned char dat, unsigned char key) {
     can get the lower 4 bits
 ==============================================================================*/
 unsigned char getLowerNibble(unsigned char dat) {
-    return ((dat & 0b00001111) == 0);
+    return (dat & 0b00001111);
 }
 
 /*==============================================================================
