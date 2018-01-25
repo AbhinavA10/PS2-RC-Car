@@ -1,12 +1,12 @@
 /*==============================================================================
     Project: PS2-RC-Car          By: Abhi Agrahari
-    Version: 1.2 				 Date: Jan 5th, 2018
+    Version: 1.5 				 Date: Jan 24th, 2018
     Target: RCCar 1.0            Processor: PIC16F1459
 
     This is a project that controls an RC Car, from a wireless PS2 controller.
 
     The current project purpose is being able to send data back and forth
-    on the PS2 controller
+    on the PS2 controller.
 ==============================================================================*/
 
 #include	"xc.h"				// XC general include file
@@ -21,8 +21,8 @@
 // TODO Set Instruction Freq. to 12MHz for simulator debugging
 
 /*TODOLIST:
- * configure vibration motor
- * check data nibble for controller type
+ * use vibration motor (already configured)
+ * use data nibble for controller type (created but unused)
  */
 
 /*==============================================================================
@@ -83,9 +83,21 @@ void turnServo(unsigned char value) {
 }
 
 /*==============================================================================
+ PWM LED 2
+    Simple function to simply PWM an LED, based on input value. Used to
+    demonstrate analog capabilities of PS2 Controller
+==============================================================================*/
+void pwmLED2(unsigned char brightness) {
+    LED2 = 0;
+    for (unsigned char counter = 255; counter != 0; counter--) {
+        if (counter == brightness) LED2 = 1;
+    }
+}
+
+/*==============================================================================
  SEND CMD RECEIVE DATA
     Function to simultaneously send a command byte when the clock goes low,
-    and recieve the data byte, when the clock goes high. This is done bit by bit.
+    and receive the data byte, when the clock goes high. This is done bit by bit.
     The clock runs at ~250kHz. -> about 4us per transfer
     Input is the command to be sent, and returns the value of the data received.
 ==============================================================================*/
@@ -109,36 +121,53 @@ unsigned char SendCMD_ReceiveDATA(unsigned char cmd) {
         __delay_us(1);
         if (i != 1) dat = dat >> 1; // shift the contents over for the next bit if it's not the last bit
     }
-    __delay_us(16);
+    __delay_us(16); // just a delay between bytes
     return dat;
 }
 
 /*==============================================================================
- DIGITAL POLL
-    Function to get digital button values from PS2 controller
-    Set attnention to low, then send and receive data.
+ SET ATTN LOW
+    Function to set attention line to low. Created this function because it is
+    used frequently. Signifies beginning of data transfer
 ==============================================================================*/
-void DigitalPoll() {
+void setATTNLow() {
     ATTNLINE = 0;
     __delay_us(16);
-    arcDataValsByte[1] = SendCMD_ReceiveDATA(0x01);
-    arcDataValsByte[2] = SendCMD_ReceiveDATA(0x42);
-    arcDataValsByte[3] = SendCMD_ReceiveDATA(0x00);
-    arcDataValsByte[4] = SendCMD_ReceiveDATA(0x00);
-    arcDataValsByte[5] = SendCMD_ReceiveDATA(0x00);
+}
+
+/*==============================================================================
+ SET ATTN HIGH
+    Function to set attention line to high. Created this function because it is
+    used frequently. Signifies end of data transfer.
+==============================================================================*/
+void setATTNHigh() {
     ATTNLINE = 1;
     __delay_us(16);
 }
 
 /*==============================================================================
+ DIGITAL POLL
+    Function to get digital button values from PS2 controller
+    Set attention to low, then send and receive data.
+==============================================================================*/
+void DigitalPoll() {
+    setATTNLow();
+    arcDataValsByte[1] = SendCMD_ReceiveDATA(0x01);
+    arcDataValsByte[2] = SendCMD_ReceiveDATA(0x42);
+    arcDataValsByte[3] = SendCMD_ReceiveDATA(0x00);
+    arcDataValsByte[4] = SendCMD_ReceiveDATA(0x00);
+    arcDataValsByte[5] = SendCMD_ReceiveDATA(0x00);
+    setATTNHigh();
+}
+
+/*==============================================================================
  ANALOG POLL
     Function to get digital button values, set vibration motor values, and get
-    anaolg joystick values from PS2 controller
+    analog joystick values from PS2 controller
     Set attention to low, then send and receive data.
 ==============================================================================*/
 void AnalogPoll() {
-    ATTNLINE = 0;
-    __delay_us(16);
+    setATTNLow();
     arcDataValsByte[1] = SendCMD_ReceiveDATA(0x01);
     arcDataValsByte[2] = SendCMD_ReceiveDATA(0x42);
     arcDataValsByte[3] = SendCMD_ReceiveDATA(0x00);
@@ -148,8 +177,7 @@ void AnalogPoll() {
     arcDataValsByte[7] = SendCMD_ReceiveDATA(0x00);
     arcDataValsByte[8] = SendCMD_ReceiveDATA(0x00);
     arcDataValsByte[9] = SendCMD_ReceiveDATA(0x00);
-    ATTNLINE = 1;
-    __delay_us(16);
+    setATTNHigh();
 }
 
 /*==============================================================================
@@ -158,25 +186,22 @@ void AnalogPoll() {
     actually configure the controller
 ==============================================================================*/
 void EnterConfig() {
-    ATTNLINE = 0;
-    __delay_us(16);
+    setATTNLow();
     arcDataValsByte[1] = SendCMD_ReceiveDATA(0x01);
     arcDataValsByte[2] = SendCMD_ReceiveDATA(0x43);
     arcDataValsByte[3] = SendCMD_ReceiveDATA(0x00);
     arcDataValsByte[4] = SendCMD_ReceiveDATA(0x01); // shows entering config
     arcDataValsByte[5] = SendCMD_ReceiveDATA(0x00);
-    ATTNLINE = 1;
-    __delay_us(16);
+    setATTNHigh();
 }
 
 /*==============================================================================
  TURN ON ANALOG MODE
     Function to turn on the returning of analog joystick values, after entering
-    config mdoe
+    config mode
 ==============================================================================*/
 void TurnOnAnalogMode() {
-    ATTNLINE = 0;
-    __delay_us(16);
+    setATTNLow();
     arcDataValsByte[1] = SendCMD_ReceiveDATA(0x01);
     arcDataValsByte[2] = SendCMD_ReceiveDATA(0x44);
     arcDataValsByte[3] = SendCMD_ReceiveDATA(0x00);
@@ -186,8 +211,7 @@ void TurnOnAnalogMode() {
     arcDataValsByte[7] = SendCMD_ReceiveDATA(0x00);
     arcDataValsByte[8] = SendCMD_ReceiveDATA(0x00);
     arcDataValsByte[9] = SendCMD_ReceiveDATA(0x00);
-    ATTNLINE = 1;
-    __delay_us(16);
+    setATTNHigh();
 }
 
 /*==============================================================================
@@ -196,8 +220,7 @@ void TurnOnAnalogMode() {
     config mode
 ==============================================================================*/
 void MapVibrationMotors() {
-    ATTNLINE = 0;
-    __delay_us(16);
+    setATTNLow();
     arcDataValsByte[1] = SendCMD_ReceiveDATA(0x01);
     arcDataValsByte[2] = SendCMD_ReceiveDATA(0x4D);
     arcDataValsByte[3] = SendCMD_ReceiveDATA(0x00);
@@ -207,8 +230,7 @@ void MapVibrationMotors() {
     arcDataValsByte[7] = SendCMD_ReceiveDATA(0xFF);
     arcDataValsByte[8] = SendCMD_ReceiveDATA(0xFF);
     arcDataValsByte[9] = SendCMD_ReceiveDATA(0xFF);
-    ATTNLINE = 1;
-    __delay_us(16);
+    setATTNHigh();
 }
 
 /*==============================================================================
@@ -219,8 +241,7 @@ void MapVibrationMotors() {
     Excludes R3,L3, Select, and Start
 ==============================================================================*/
 void TurnonPressureValues() {
-    ATTNLINE = 0;
-    __delay_us(16);
+    setATTNLow();
     arcDataValsByte[1] = SendCMD_ReceiveDATA(0x01);
     arcDataValsByte[2] = SendCMD_ReceiveDATA(0x4F);
     arcDataValsByte[3] = SendCMD_ReceiveDATA(0x00);
@@ -230,8 +251,8 @@ void TurnonPressureValues() {
     arcDataValsByte[7] = SendCMD_ReceiveDATA(0x00);
     arcDataValsByte[8] = SendCMD_ReceiveDATA(0x00);
     arcDataValsByte[9] = SendCMD_ReceiveDATA(0x00);
-    ATTNLINE = 1;
-    __delay_us(16);
+    setATTNHigh();
+    analogPressureMode = true;
 }
 
 /*==============================================================================
@@ -239,8 +260,7 @@ void TurnonPressureValues() {
     Function to exit configuration mode
 ==============================================================================*/
 void Exitconfig() {
-    ATTNLINE = 0;
-    __delay_us(16);
+    setATTNLow();
     arcDataValsByte[1] = SendCMD_ReceiveDATA(0x01);
     arcDataValsByte[2] = SendCMD_ReceiveDATA(0x43);
     arcDataValsByte[3] = SendCMD_ReceiveDATA(0x00);
@@ -250,8 +270,7 @@ void Exitconfig() {
     arcDataValsByte[7] = SendCMD_ReceiveDATA(0x5A);
     arcDataValsByte[8] = SendCMD_ReceiveDATA(0x5A);
     arcDataValsByte[9] = SendCMD_ReceiveDATA(0x5A);
-    ATTNLINE = 1;
-    __delay_us(16);
+    setATTNHigh();
 }
 
 /*==============================================================================
@@ -268,9 +287,7 @@ void PS2_configToAnalog() {
     EnterConfig();
     TurnOnAnalogMode();
     MapVibrationMotors();
-    if (analogPressureMode) {
-        TurnonPressureValues();
-    }
+    //TurnonPressureValues();
     Exitconfig();
     analogMode = true; // set this boolean to true, so that different functions are called in main()
 }
@@ -294,7 +311,32 @@ bool isPressed(unsigned char dat, unsigned char key) {
 }
 
 /*==============================================================================
+ GET LOWER NIBBLE
+    Using bitwise operations, we can get the lower 4 bits of the data byte.
+    The data's value is something like `0b01000001`. The lower nibble indicates 
+    how many 16 bit words follow the header. ANDing the data with 0b00001111, we
+    can get the lower 4 bits
+==============================================================================*/
+unsigned char getLowerNibble(unsigned char dat) {
+    return ((dat & 0b00001111) == 0);
+}
+
+/*==============================================================================
+ GET HIGHER NIBBLE
+    Using bitwise operations, we can get the upper 4 bits of the data byte.
+    The data's value is something like `0b01000001`. The upper nibble indicates 
+    indicates the mode of operation of the controller. Shifting data values to 
+    the right 4 times, will give us the upper nibble
+==============================================================================*/
+unsigned char getUpperNibble(unsigned char dat) {
+    return (dat >> 4);
+}
+
+/*==============================================================================
  BEEP
+    Below functions are to create beeping noises. A separate function was needed
+    for each note as __delay_us() cannot accept a variable as a parameter.
+    The functions are used to display functioning of digital PS2 buttons.
 ==============================================================================*/
 void beep(unsigned char period, unsigned char cycles) {
     for (cycles; cycles != 0; cycles--) {
@@ -304,8 +346,7 @@ void beep(unsigned char period, unsigned char cycles) {
 }
 
 void Eb4() {
-    for (duration = 0; duration != 39; duration++) //Bb4 sixteenth note,or for .125s
-    {
+    for (duration = 0; duration != 39; duration++) {
         BEEPER = 1;
         __delay_us(1607);
         BEEPER = 0;
@@ -314,8 +355,7 @@ void Eb4() {
 }
 
 void E4() {
-    for (duration = 0; duration != 41; duration++) //Bb4 sixteenth note,or for .125s
-    {
+    for (duration = 0; duration != 41; duration++) {
         BEEPER = 1;
         __delay_us(1517);
         BEEPER = 0;
@@ -324,8 +364,7 @@ void E4() {
 }
 
 void F4() {
-    for (duration = 0; duration != 43; duration++) //Bb4 sixteenth note,or for .125s
-    {
+    for (duration = 0; duration != 43; duration++) {
         BEEPER = 1;
         __delay_us(1432);
         BEEPER = 0;
@@ -334,29 +373,11 @@ void F4() {
 }
 
 void Fsharp() {
-    for (duration = 0; duration != 46; duration++) //Bb4 sixteenth note,or for .125s
-    {
+    for (duration = 0; duration != 46; duration++) {
         BEEPER = 1;
         __delay_us(1351);
         BEEPER = 0;
         __delay_us(1351);
-    }
-}
-
-void G5() {
-    for (duration = 0; duration != 98; duration++) //Bb4 sixteenth note,or for .125s
-    {
-        BEEPER = 1;
-        __delay_us(638);
-        BEEPER = 0;
-        __delay_us(638);
-    }
-}
-
-void pwmLED2(unsigned char brightness) {
-    LED2 = 0;
-    for (unsigned char counter = 255; counter != 0; counter--) {
-        if (counter == brightness) LED2 = 1;
     }
 }
 
@@ -369,6 +390,7 @@ int main(void) {
     initPorts(); // Initialize I/O pins and peripherals
     __delay_us(200);
     PS2_configToAnalog(); //switch PS2 controller to analog mode
+    //comment line out above to switch to digital only mode
     while (1) {
         if (analogMode) {
             AnalogPoll();
@@ -381,8 +403,8 @@ int main(void) {
                 MOTORCMDVal = arcDataValsByte[P_BUTTON_R2];
                 // Above line sets motor value to the returned button pressure
             }
-            pwmLED2(arcDataValsByte[9]);
-            turnServo(arcDataValsByte[6]);
+            pwmLED2(arcDataValsByte[9]); // Y-axis on left joystick
+            turnServo(arcDataValsByte[6]); //X-axis on right joystick
         } else {
             DigitalPoll();
         }
@@ -402,8 +424,6 @@ int main(void) {
         {
             asm("movlp 0x00");
             asm("goto 0x001C");
-        } else {
-            LED3 = 0;
         }
     }
 }
