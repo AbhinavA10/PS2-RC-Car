@@ -1,12 +1,14 @@
 ﻿# PS2-RC-Car
 This is a project that controls an RC Car, from a wireless PS2 controller.
 
-The current step/project purpose is being able to send data back and forth on the PS2 controller
+The current project purpose is being able to send data back and forth on the PS2 controller.
 
 - PIC Microcontroller is the master
 - PS2 Controller is the slave
 
 The MSSP/SPI Module in the PIC16F1459, transfers the MSB first (p197 of the datasheet). However, the PS2 protocol is to transfer LSB first. So, the SPI module was avoided (even though it was originally programmed to be used), and I have now  manually set pins, etc.
+
+The circuit board I designed for this project can be found [here](https://circuits.io/circuits/5553911-rc-car)
 
 ## Notes on PS2 Interface
 
@@ -90,7 +92,7 @@ DATA: value of Analog Left X Axis `(Right:left, 0:255)`
 
 BYTE 9:
 CMD: always `0x00`.
-DATA: value of Analog Left X Axis `(Up:Down, 0:255)`
+DATA: value of Analog Left Y Axis `(Up:Down, 0:255)`
 
 Ex. for 6th to 9th Byte: if data is `0x80 = 0b1000000 = 128`, the joystick is at the middle
 

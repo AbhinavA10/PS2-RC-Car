@@ -21,7 +21,7 @@
 // TODO Set Instruction Freq. to 12MHz for simulator debugging
 
 /*TODOLIST:
- * check total time (time between polls should be 5-10ms?)
+ * configure vibration motor
  * check data nibble for controller type
  */
 
@@ -32,7 +32,6 @@
 unsigned char MOTORCMDVal = 0;
 unsigned char arcDataValsByte[22]; // max is 21 bytes of data. I made 22 so we
 //humans can easily read/reference the code, arcDataValsByte[0] is unused
-unsigned char servoPos = 90;
 unsigned char duration = 0;
 bool analogMode = false;
 bool analogPressureMode = false;
@@ -355,12 +354,9 @@ void G5() {
 }
 
 void pwmLED2(unsigned char brightness) {
-    LED2 = 0; // Turn LED10 off.
-
-    for (unsigned char counter = 255; counter != 0; counter--) // Count down from 255 to 0
-    {
-        if (counter == brightness) // Turn on the LED when counter = brightness
-            LED2 = 1;
+    LED2 = 0;
+    for (unsigned char counter = 255; counter != 0; counter--) {
+        if (counter == brightness) LED2 = 1;
     }
 }
 
@@ -376,15 +372,17 @@ int main(void) {
     while (1) {
         if (analogMode) {
             AnalogPoll();
-            if (isPressed(arcDataValsByte[5], BUTTON_TRIANGLE)) {
+            if (isPressed(arcDataValsByte[5], BUTTON_SELECT)) {
                 MOTORCMDVal = 0xFF; // switch on in next poll
             } else {
                 MOTORCMDVal = 0x00; // switch off
             }
             if (analogPressureMode) {
-                MOTORCMDVal = arcDataValsByte[P_BUTTON_TRIANGLE];
+                MOTORCMDVal = arcDataValsByte[P_BUTTON_R2];
                 // Above line sets motor value to the returned button pressure
             }
+            pwmLED2(arcDataValsByte[9]);
+            turnServo(arcDataValsByte[6]);
         } else {
             DigitalPoll();
         }
@@ -400,14 +398,12 @@ int main(void) {
         if (isPressed(arcDataValsByte[5], BUTTON_X)) {
             Fsharp();
         }
-        pwmLED2(arcDataValsByte[9]);
         if (S1 == 0) // Enter the bootloader
-        { // was getting stuck here, meaning S1 was always 0?? Not sure how it was fixed, but it was
-
-            LED3 = 1;
-            //            asm("movlp 0x00");
-            //            asm("goto 0x001C");
-        }else{
-        LED3 = 0;}
+        {
+            asm("movlp 0x00");
+            asm("goto 0x001C");
+        } else {
+            LED3 = 0;
+        }
     }
 }
