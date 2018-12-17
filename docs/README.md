@@ -1,16 +1,18 @@
 ﻿# PS2-RC-Car
 This is a project that controls an RC Car, from a wireless PS2 controller.
 
-The current project purpose is being able to send data back and forth on the PS2 controller.
+The current project purpose is being able to send data back and forth on the PS2 controller. The report I created can be viewed [here](https://github.com/AbhinavA10/PS2-RC-Car/blob/master/docs/PS2_Interface_Report.pdf)
+
+Some video demos of this project can be seen by downloading the files [here](https://github.com/AbhinavA10/PS2-RC-Car/blob/master/images_other/Test_videos)
+
+The circuit board I designed for this project was found on circuits.io. However, since then the service has been deprecated. My circuit is still available for viewing in the [images folder](https://github.com/AbhinavA10/PS2-RC-Car/blob/master/images_other/CircuitDesign_completed)
+
+## Notes on PS2 Interface
 
 - PIC Microcontroller is the master
 - PS2 Controller is the slave
 
 The MSSP/SPI Module in the PIC16F1459, transfers the MSB first (p197 of the datasheet). However, the PS2 protocol is to transfer LSB first. So, the SPI module was avoided (even though it was originally programmed to be used), and I have now  manually set pins, etc.
-
-The circuit board I designed for this project can be found [here](https://circuits.io/circuits/5553911-rc-car)
-
-## Notes on PS2 Interface
 
 ### Vocabulary
 - Bit: one binary value
@@ -151,7 +153,7 @@ These main commands are sent in Byte2.
 - BYTES5->9 = `0x5A`
 - Config modes are always 9byte packets
 
-#### Recommended sequence to switch from digital to analog mode
+#### Sequence to switch from digital to analog mode
 1. Digital Poll (three times for initiation and refresh)
 2. Enter configuration mode
 3. Switch to analog mode and lock the analog mode
@@ -164,7 +166,7 @@ These main commands are sent in Byte2.
 
 - [Gamesx PS2 Controller Protocol](https://www.gamesx.com/controldata/psxcont/psxcont.htm)
 - [CuriousInventor's Protocol Explanation](http://htmlpreview.github.io/?https://github.com/AbhinavA10/PS2-RC-Car/blob/master/docs/Sources/Interfacing%20a%20PS2%20(PlayStation%202)%20Controller%20-%20CuriousInventor%20Tutorials.html) Note: this is not my website, I had saved the old version of their site, and am using it as such
-- [Playstation Servo Controller Interface](docs/Sources/playstation-servo-controller-interface.pdf)
+- [Playstation Servo Controller Interface](Sources/playstation-servo-controller-interface.pdf)
 - [PIC16F1459 Datasheet](docs/Sources/PIC16F1459 Data Sheet.pdf)
 - [Checking if a bit is set, in a byte](https://www.gamedev.net/forums/topic/657315-checking-if-a-bit-is-set-in-a-byte/)
 - [Bit Field - Wikipedia](https://en.wikipedia.org/wiki/Bit_field)
