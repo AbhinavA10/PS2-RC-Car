@@ -1,11 +1,12 @@
 ﻿# PS2-RC-Car
-This is a project that controls an RC Car, from a wireless PS2 controller.
 
-The current project purpose is being able to send data back and forth on the PS2 controller. The report I created can be viewed [here](https://github.com/AbhinavA10/PS2-RC-Car/blob/master/docs/PS2_Interface_Report.pdf)
+Interfacing with a PS2 Controller, for controlling an RC car.
+
+The current project purpose is to be able to interface with a PS2 controller, using a PIC16 microcontroller. The report I created can be viewed [here](https://github.com/AbhinavA10/PS2-RC-Car/blob/master/docs/PS2_Interface_Report.pdf)
 
 Some video demos of this project can be seen by downloading the files [here](https://github.com/AbhinavA10/PS2-RC-Car/blob/master/images_other/Test_videos)
 
-The circuit board I designed for this project was found on circuits.io. However, since then the service has been deprecated. My circuit is still available for viewing in the [images folder](https://github.com/AbhinavA10/PS2-RC-Car/blob/master/images_other/CircuitDesign_completed)
+I designed a PCB for this project using circuits.io. However, since then the web service has been deprecated. My circuit is still available for viewing in the [images folder](https://github.com/AbhinavA10/PS2-RC-Car/blob/master/images_other/CircuitDesign_completed)
 
 ## Notes on PS2 Interface
 
@@ -165,7 +166,7 @@ These main commands are sent in Byte2.
 ## Sources
 
 - [Gamesx PS2 Controller Protocol](https://www.gamesx.com/controldata/psxcont/psxcont.htm)
-- [CuriousInventor's Protocol Explanation](http://htmlpreview.github.io/?https://github.com/AbhinavA10/PS2-RC-Car/blob/master/docs/Sources/Interfacing%20a%20PS2%20(PlayStation%202)%20Controller%20-%20CuriousInventor%20Tutorials.html) Note: this is not my website, I had saved the old version of their site, and am using it as such
+- [CuriousInventor's Protocol Explanation](http://htmlpreview.github.io/?https://github.com/AbhinavA10/PS2-RC-Car/blob/master/docs/Sources/Interfacing%20a%20PS2%20(PlayStation%202)%20Controller%20-%20CuriousInventor%20Tutorials.html)
 - [Playstation Servo Controller Interface](Sources/playstation-servo-controller-interface.pdf)
 - [PIC16F1459 Datasheet](docs/Sources/PIC16F1459 Data Sheet.pdf)
 - [Checking if a bit is set, in a byte](https://www.gamedev.net/forums/topic/657315-checking-if-a-bit-is-set-in-a-byte/)
